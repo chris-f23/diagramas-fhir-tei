@@ -1,0 +1,115 @@
+---
+config:
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+direction TB
+
+class SolicitudInterconsulta_Alergia { }
+style SolicitudInterconsulta_Alergia fill:#f8c3cd,stroke:#000000
+link SolicitudInterconsulta_Alergia "./Alergia.mmd"
+
+class SolicitudInterconsulta_Diagnostico { }
+style SolicitudInterconsulta_Diagnostico fill:#f8c3cd,stroke:#000000
+link SolicitudInterconsulta_Diagnostico "./Diagnostico.mmd"
+
+class SolicitudInterconsulta_ObservacionIndiceComorbilidad { }
+style SolicitudInterconsulta_ObservacionIndiceComorbilidad fill:#f8c3cd,stroke:#000000
+link SolicitudInterconsulta_ObservacionIndiceComorbilidad "./ObservacionIndiceComorbilidad.mmd"
+
+class SolicitudInterconsulta_ObservacionPacienteCuidador { }
+style SolicitudInterconsulta_ObservacionPacienteCuidador fill:#f8c3cd,stroke:#000000
+link SolicitudInterconsulta_ObservacionPacienteCuidador "./ObservacionPacienteCuidador.mmd"
+
+SolicitudInterconsulta_Alergia "*" <-- "1" SolicitudInterconsulta
+SolicitudInterconsulta_Diagnostico "0..1" <-- "1" SolicitudInterconsulta
+SolicitudInterconsulta_ObservacionIndiceComorbilidad "0..1" <-- "1" SolicitudInterconsulta
+SolicitudInterconsulta_ObservacionPacienteCuidador "0..1" <-- "1" SolicitudInterconsulta
+
+class SolicitudInterconsulta {
+
+  %% Identificador interno de la solicitud de interconsulta.
+  %% ServiceRequest.id
+  + Id : UUID
+
+  %% Identificador de la solicitud de interconsulta generado por MINSAL luego de procesar el evento de inicio.
+  + IdMinsal : UUID = NULL
+
+  %% Identificador de la solicitud de interconsulta generado por un sistema en el establecimiento solicitante, solo si el establecimiento solicitante no es el mismo HRA.
+  + IdSolicitante : UUID = NULL
+
+  %% ServiceRequest.authoredOn
+  + FechaSolicitud : DATETIME
+  %% ServiceRequest.category
+  + IdModalidadAtencion : UUID = NULL
+  %% ServiceRequest.reasonCode
+  + IdMotivoDerivacion : UUID = NULL
+  %% ServiceRequest.priority
+  + IdPrioridadSolicitud : UUID = NULL
+
+  %% SLICES FOR EXTENSION
+  + IdMotivoCierreInterconsulta : MotivoCierreInterconsulta.Id = NULL
+  + RequiereExamen : BIT = NULL
+  + EsAtencionPreferente : BIT = NULL
+  + EsGES : BIT = NULL
+  + EsPosibleResolverEnAPS : BIT = NULL
+  + EsAlergico : BIT = NULL
+  + IdReferenciaOrigen : ReferenciaOrigen.Id = NULL
+  + FundamentoPriorizacion : VARCHAR = NULL
+  + IdEstadoInterconsulta : EstadoInterconsulta.Id = NULL
+  + IdEspecialidadMedica : EspecialidadMedica.Id = NULL
+  + IdSubEspecialidadMedica : EspecialidadMedica.Id = NULL
+  + IdReferenciaDestino : ReferenciaDestino.Id = NULL
+  + IdPertinenciaInterconsulta : PertinenciaInterconsulta.Id = NULL
+
+  %% SLICES FOR SUPPORTINGINFO
+  %% + IdDiagnosticoInicio :
+}
+style SolicitudInterconsulta fill:#e4d6f5,stroke:#000000
+
+class PertinenciaInterconsulta { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" PertinenciaInterconsulta
+link PertinenciaInterconsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSPertinenciaInterconsulta.html"
+style PertinenciaInterconsulta fill:#e4d6f5,stroke:#000000
+
+class ModalidadAtencion { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" ModalidadAtencion
+link ModalidadAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSModalidadAtencionCodigo.html"
+style ModalidadAtencion fill:#e4d6f5,stroke:#000000
+
+class MotivoDerivacion { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" MotivoDerivacion
+link MotivoDerivacion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-QuestionnaireResponseIniciarLE.html"
+style MotivoDerivacion fill:#e4d6f5,stroke:#000000
+
+class PrioridadSolicitud { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" PrioridadSolicitud
+link PrioridadSolicitud "https://hl7.org/fhir/R4/valueset-request-priority.html"
+style PrioridadSolicitud fill:#e4d6f5,stroke:#000000
+
+class ReferenciaOrigen { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" ReferenciaOrigen
+link ReferenciaOrigen "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSorigenInterconsulta.html"
+style ReferenciaOrigen fill:#e4d6f5,stroke:#000000
+
+class ReferenciaDestino { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" ReferenciaDestino
+link ReferenciaDestino "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSDestinoReferenciaCodigo.html"
+style ReferenciaDestino fill:#e4d6f5,stroke:#000000
+
+class MotivoCierreInterconsulta { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" MotivoCierreInterconsulta
+link MotivoCierreInterconsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSMotivoCierreInterconsulta.html"
+style MotivoCierreInterconsulta fill:#e4d6f5,stroke:#000000
+
+class EstadoInterconsulta { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" EstadoInterconsulta
+link EstadoInterconsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEstadoInterconsulta.html"
+style EstadoInterconsulta fill:#e4d6f5,stroke:#000000
+
+class EspecialidadMedica { <<ValueSet>> }
+SolicitudInterconsulta "*" --> "0..1" EspecialidadMedica: Especialidad
+SolicitudInterconsulta "*" --> "0..1" EspecialidadMedica: Subespecialidad
+link EspecialidadMedica "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEspecialidadMed.html"
+style EspecialidadMedica fill:#e4d6f5,stroke:#000000

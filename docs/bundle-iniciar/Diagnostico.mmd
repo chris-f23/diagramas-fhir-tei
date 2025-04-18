@@ -1,0 +1,74 @@
+---
+config:
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+direction TB
+
+class SolicitudInterconsulta { }
+style SolicitudInterconsulta fill:#e4d6f5,stroke:#000000
+link SolicitudInterconsulta "./SolicitudInterconsulta.mmd"
+SolicitudInterconsulta "1" --> "0..1" SolicitudInterconsulta_Diagnostico
+
+class SolicitudInterconsulta_Diagnostico {
+  %% Condition.id
+  + Id: UUID
+
+  %% Condition.clinicalStatus
+  + IdEstadoClinicoDiagnostico : UUID = NULL
+
+  %% Condition.verificationStatus
+  + IdEstadoVerificacionDiagnostico : UUID = NULL
+
+  %% Condition.category
+  + IdCategoriaDiagnostico : UUID
+
+  %% Condition.severity
+  + IdSeveridadDiagnostico : UUID = NULL
+
+  %% Condition.code
+  + IdDiagnostico : UUID
+
+  %% Condition.code.text
+  + DescripcionDiagnostico : VARCHAR = NULL
+
+  %% Si es distinto de NULL debe tener la siguiente estructura:
+  %% {
+  %%   type: "PERIOD" | "DATETIME"
+  %%   value: any
+  %% }
+  %% Donde 'value' es del tipo indicado en 'type', correspondiente a uno de los tipos de datos de FHIR',
+  %% Por ejemplo, el tipo 'DateTime' está definido en 'https://hl7.org/fhir/R4/datatypes.html#dateTime'.
+
+  %% Condition.onset[FechaEstimadaDiagnostico.type] = FechaEstimadaDiagnostico.value
+  + FechaEstimadaDiagnostico : JSON = NULL
+}
+%% SolicitudInterconsulta "1" --> "0..1" SolicitudInterconsulta_Diagnostico
+style SolicitudInterconsulta_Diagnostico fill:#c1e6ff,stroke:#000000
+link SolicitudInterconsulta_Diagnostico "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-ConditionDiagnosticoLE.html"
+
+class EstadoClinicoDiagnostico { <<ValueSet>> }
+SolicitudInterconsulta_Diagnostico "*" --> "0..1" EstadoClinicoDiagnostico
+link EstadoClinicoDiagnostico "https://hl7.org/fhir/R4/valueset-condition-clinical.html"
+style EstadoClinicoDiagnostico fill:#c1e6ff,stroke:#000000
+
+class EstadoVerificacionDiagnostico { <<ValueSet>> }
+SolicitudInterconsulta_Diagnostico "*" --> "0..1" EstadoVerificacionDiagnostico
+link EstadoVerificacionDiagnostico "https://hl7.org/fhir/R4/valueset-condition-ver-status.html"
+style EstadoVerificacionDiagnostico fill:#c1e6ff,stroke:#000000
+
+class CategoriaDiagnostico { <<ValueSet>> }
+SolicitudInterconsulta_Diagnostico "*" --> "1" CategoriaDiagnostico
+link CategoriaDiagnostico "https://hl7.org/fhir/R4/valueset-condition-category.html"
+style CategoriaDiagnostico fill:#c1e6ff,stroke:#000000
+
+class SeveridadDiagnostico { <<ValueSet>> }
+SolicitudInterconsulta_Diagnostico "*" --> "0..1" SeveridadDiagnostico
+link SeveridadDiagnostico "https://hl7.org/fhir/R4/valueset-condition-severity.html"
+style SeveridadDiagnostico fill:#c1e6ff,stroke:#000000
+
+class Diagnostico { <<ValueSet>> }
+SolicitudInterconsulta_Diagnostico "*" --> "1" Diagnostico
+link Diagnostico "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTerminologiasDiag.html"
+style Diagnostico fill:#c1e6ff,stroke:#000000

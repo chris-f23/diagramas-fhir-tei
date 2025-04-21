@@ -1,0 +1,201 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+
+class BundleIniciar { }
+
+class SolicitudInterconsulta {
+  id: UUID
+  idMinsal: UUID NULL
+  
+}
+
+%% --------------------------------------------------------------------------------------------------------
+
+class SolicitudExamen {
+  id : UUID
+
+  %% Texto libre obligatorio para describir los exámenes solicitados.
+  descripcion: VARCHAR
+
+  %% Fecha en que se emite la solicitud.
+  fechaSolicitud: DATETIME
+
+  %% Fecha en la que ocurrirá el examen.
+  fechaProgramada: DATETIME NULL
+
+  %% Texto libre obligatorio para indicar el motivo de la solicitud.
+  motivo: VARCHAR
+  
+  %% Comentario opcional. Admite formato MARKDOWN.
+  comentario: VARCHAR NULL
+}
+
+class CodigoExamen {
+  <<ValueSet>>
+}
+
+class CodigoMotivoSolicitudExamen {
+  <<ValueSet>>
+}
+SolicitudExamen --> "1" CodigoMotivoSolicitudExamen
+SolicitudExamen --> "*" CodigoExamen
+
+link CodigoMotivoSolicitudExamen "https://hl7.org/fhir/R4/valueset-procedure-reason.html"
+link CodigoExamen "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-CodigoExamen.html"
+style CodigoMotivoSolicitudExamen fill:#FFE6A5
+style CodigoExamen fill:#FFE6A5
+
+%% --------------------------------------------------------------------------------------------------------
+
+class MotivoDerivacion {
+  id: UUID
+
+  %% El motivo de derivación de la solicitud de interconsulta.
+  motivo: JSON NULL
+}
+
+class EstadoMotivoDerivacion {
+  <<ValueSet>>
+}
+
+MotivoDerivacion --> "1" EstadoMotivoDerivacion
+link EstadoMotivoDerivacion "https://hl7.org/fhir/R4/valueset-questionnaire-answers-status.html"
+style EstadoMotivoDerivacion fill:#FFE6A5
+
+
+
+
+%% --------------------------------------------------------------------------------------------------------
+
+
+class EstablecimientoSalud {
+  id: UUID
+  codigoDEIS: VARCHAR
+  nombre: VARCHAR
+}
+
+%% --------------------------------------------------------------------------------------------------------
+
+
+class Profesional {
+  id: UUID
+  rut: VARCHAR
+  %% Codigo identificador en Registro Nacional de Prestadores Individuales, opcional.
+  codigoRNPI: VARCHAR NULL
+
+  nombre: VARCHAR
+  apellidoPaterno: VARCHAR
+  apellidoMaterno: VARCHAR NULL
+
+  fechaNacimiento: DATE
+
+  direccionDomicilio: VARCHAR
+
+}
+
+class CodigoPais { <<ValueSet>> }
+link CodigoPais "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+
+class CodigoRegion { <<ValueSet>> }
+link CodigoRegion "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosRegionesCL.html"
+
+class CodigoProvincia { <<ValueSet>> }
+link CodigoProvincia "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html"
+
+class CodigoComuna { <<ValueSet>> }
+link CodigoComuna "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html"
+
+class CodigoUsoDomicilio { <<ValueSet>> }
+link CodigoUsoDomicilio "http://hl7.org/fhir/R4/valueset-address-use.html"
+
+class ContactoCorreoOTelefono {
+  id: UUID
+  sistema: 'CORREO' | 'TELEFONO'
+  valor: VARCHAR
+  prioridad: INTEGER
+}
+
+class UsoContacto { <<ValueSet>> }
+link UsoContacto "https://hl7.org/fhir/R4/valueset-contact-point-use.html"
+
+class CodigoGeneroAdministrativo { <<ValueSet>> }
+link CodigoGeneroAdministrativo "https://hl7.org/fhir/R4/valueset-administrative-gender.html"
+
+class CodigoGeneroAdministrativo { <<ValueSet>> }
+link CodigoGeneroAdministrativo "https://hl7.org/fhir/R4/valueset-administrative-gender.html"
+
+class Nacionalidad { <<ValueSet>> }
+link Nacionalidad "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+
+class IdentidadGenero { <<ValueSet>> }
+link IdentidadGenero "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSIdentidaddeGenero.html"
+
+Profesional --> "0..1" Nacionalidad
+Profesional --> "0..1" IdentidadGenero
+Profesional --> "*" ContactoCorreoOTelefono
+Profesional --> "0..1" CodigoGeneroAdministrativo
+Profesional --> "1" CodigoUsoDomicilio
+
+Profesional --> "0..1" CodigoPais
+Profesional --> "0..1" CodigoRegion
+Profesional --> "0..1" CodigoProvincia
+Profesional --> "0..1" CodigoComuna
+ContactoCorreoOTelefono "*" --> "1" UsoContacto
+
+
+
+
+%% --------------------------------------------------------------------------------------------------------
+
+class RolProfesional { }
+
+class AlergiaOIntolerancia { }
+
+class ResultadoExamen { }
+
+class ObservacionPacienteEsCuidador { }
+
+class ObservacionPacienteTieneDiscapacidad { }
+
+class ObservacionIndiceComorbilidad { }
+
+class CondicionDiagnosticoInicial { }
+
+class Paciente { }
+
+class AtencionInicial { }
+
+%% SolicitudInterconsulta "1" <-- "1" BundleIniciar
+%% SolicitudExamen "*" <-- "1" BundleIniciar
+%% MotivoDerivacion "0..1" <-- "1" BundleIniciar
+%% EstablecimientoSalud "1" <-- "1" BundleIniciar
+%% Profesional "1" <-- "1" BundleIniciar
+%% RolProfesional "1" <-- "1" BundleIniciar
+%% AlergiaOIntolerancia "*" <-- "1" BundleIniciar
+%% ResultadoExamen "*" <-- "1" BundleIniciar
+BundleIniciar --> "*" SolicitudExamen
+BundleIniciar --> "0..1" MotivoDerivacion
+BundleIniciar --> "1" EstablecimientoSalud
+BundleIniciar --> "1" Profesional
+BundleIniciar --> "1" RolProfesional
+BundleIniciar --> "*" AlergiaOIntolerancia
+BundleIniciar --> "*" ResultadoExamen
+
+
+BundleIniciar --> "0..1" ObservacionPacienteEsCuidador
+BundleIniciar --> "0..1" ObservacionPacienteTieneDiscapacidad
+BundleIniciar --> "0..1" ObservacionIndiceComorbilidad
+BundleIniciar --> "1" CondicionDiagnosticoInicial
+BundleIniciar --> "1" Paciente
+BundleIniciar --> "1" AtencionInicial
+BundleIniciar --> "1" SolicitudInterconsulta
+

@@ -74,7 +74,7 @@ class CodigoRegion { <<ValueSet>> }
 class CodigoProvincia { <<ValueSet>> }
 class CodigoComuna { <<ValueSet>> }
 
-class Contacto {
+class MedioContacto {
   id: UUID
   tipo: 'CORREO' | 'TELEFONO'
   uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
@@ -102,7 +102,7 @@ CodigoEspecialidadProfesional <|-- CodigoEspecialidadFarmaceutica
 Profesional --> "*" EspecialidadProfesional
 CodigoEspecialidadProfesional --> "1" TipoEspecialidadProfesional
 Profesional --> "0..1" IdentidadGenero
-Profesional --> "*" Contacto
+Profesional --> "*" MedioContacto
 Profesional --> "0..1" CodigoGeneroAdministrativo
 Profesional --> "0..1" Nacionalidad
 

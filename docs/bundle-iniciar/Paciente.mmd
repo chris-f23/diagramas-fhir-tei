@@ -1,0 +1,126 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class Paciente {
+  id : UUID
+
+  perteneceAPuebloOriginario : BIT
+  perteneceAPuebloAfrodescendiente : BIT NULL
+
+  nombreOficial : VARCHAR NULL
+  apellidoPaterno : VARCHAR
+  apellidoMaterno : VARCHAR
+  
+  nombreSocial : VARCHAR NULL
+
+  fechaNacimiento : DATETIME
+  fechaFallecimiento : DATETIME NULL
+
+}
+
+class IdentificadorPaciente { <<JSON>>}
+link IdentificadorPaciente "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PatientLE-definitions.html#Patient.identifier"
+
+Paciente --> "1..*" IdentificadorPaciente
+
+
+class CodigoIdentidadGenero { <<ValueSet>> }
+link CodigoIdentidadGenero "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSIdentidaddeGenero.html"
+style CodigoIdentidadGenero fill:#FFE6A5
+
+
+Paciente --> "1" CodigoIdentidadGenero
+
+
+class CodigoGeneroAdministrativo { <<ValueSet>> }
+link CodigoGeneroAdministrativo "https://hl7.org/fhir/R4/valueset-administrative-gender.html"
+style CodigoGeneroAdministrativo fill:#FFE6A5
+
+
+Paciente --> "0..1" CodigoGeneroAdministrativo: Sexo biologico
+Paciente --> "1" CodigoGeneroAdministrativo: Sexo administrativo
+
+class CodigoNacionalidad { <<ValueSet>> }
+link CodigoNacionalidad "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+style CodigoNacionalidad fill:#FFE6A5
+
+
+Paciente --> "1" CodigoNacionalidad: Nacionalidad
+Paciente --> "1" CodigoNacionalidad: País de origen
+
+
+class CodigoReligion { <<ValueSet>> }
+link CodigoReligion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSReligion.html"
+style CodigoReligion fill:#FFE6A5
+
+
+Paciente --> "0..1" CodigoReligion
+
+class CodigoPuebloOriginario { <<ValueSet>> }
+link CodigoPuebloOriginario "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-PueblosOriginariosVS.html"
+style CodigoPuebloOriginario fill:#FFE6A5
+
+Paciente --> "0..1" CodigoPuebloOriginario
+
+class MedioContacto {
+  id: UUID
+  tipo: 'CORREO' | 'TELEFONO'
+  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
+  valor: VARCHAR
+  ordenPreferencia: INTEGER
+}
+
+Paciente --> "1..*" MedioContacto
+
+note for Domicilio "extension:SituacionCalle no tiene sentido a este nivel"
+class Domicilio {
+  id : UUID
+  direccion: VARCHAR
+  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
+}
+class CodigoPais { <<ValueSet>> }
+
+class CodigoRegion { <<ValueSet>> }
+
+class CodigoProvincia { <<ValueSet>> }
+class CodigoComuna { <<ValueSet>> }
+
+Domicilio --> "0..1" CodigoPais
+Domicilio --> "0..1" CodigoRegion
+Domicilio --> "0..1" CodigoProvincia
+Domicilio --> "0..1" CodigoComuna
+
+Paciente --> "*" Domicilio
+
+
+class CodigoEstadoCivil { <<ValueSet>> }
+link CodigoEstadoCivil "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEstadoCivil.html"
+style CodigoEstadoCivil fill:#FFE6A5
+
+Paciente --> "0..1" CodigoEstadoCivil
+
+
+class Contacto {
+  nombre : VARCHAR NULL
+  apellidoPaterno : VARCHAR
+  apellidoMaterno : VARCHAR NULL
+}
+
+class CodigoRelacionContacto { <<ValueSet>> }
+link CodigoRelacionContacto "https://hl7.org/fhir/R4/valueset-patient-contactrelationship.html"
+style CodigoRelacionContacto fill:#FFE6A5
+
+Contacto --> "*" CodigoRelacionContacto
+
+Paciente --> "*" Contacto

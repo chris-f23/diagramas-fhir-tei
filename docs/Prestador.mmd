@@ -12,7 +12,8 @@ config:
 classDiagram
 direction LR
 
-class Profesional {
+
+class Prestador {
   id: UUID
   rut: VARCHAR
   %% Codigo identificador en Registro Nacional de Prestadores Individuales, opcional.
@@ -25,6 +26,15 @@ class Profesional {
   fechaNacimiento: DATE
 }
 
+
+
+class PrestadorAdministrativo { }
+class PrestadorProfesional { }
+
+PrestadorAdministrativo --|> Prestador
+PrestadorProfesional --|> Prestador
+
+
 class TituloProfesional {
   %% Su contenido es un array de strings
   menciones: JSON NULL
@@ -35,7 +45,7 @@ class TituloProfesional {
   entidadEmisora: VARCHAR
 }
 
-class CodigoTipoProfesional { <<ValueSet>> }
+class CodigoTipoPrestador { <<ValueSet>> }
 
 class EspecialidadProfesional {
   descripcion: VARCHAR
@@ -44,7 +54,7 @@ class EspecialidadProfesional {
   entidadEmisora: VARCHAR NULL
 }
 
-class TipoEspecialidadProfesional {
+class CodigoTipoEspecialidadProfesional {
   <<Enum>>
   ESPECIALIDAD
   SUBESPECIALIDAD
@@ -81,33 +91,42 @@ class MedioContacto {
   valor: VARCHAR
   ordenPreferencia: INTEGER
 }
+
 class CodigoGeneroAdministrativo { <<ValueSet>> }
 
-class Nacionalidad { <<ValueSet>> }
-class IdentidadGenero { <<ValueSet>> }
+class CodigoNacionalidad { <<ValueSet>> }
+class CodigoIdentidadGenero { <<ValueSet>> }
+
 Domicilio --> "0..1" CodigoPais
 Domicilio --> "0..1" CodigoRegion
 Domicilio --> "0..1" CodigoProvincia
 Domicilio --> "0..1" CodigoComuna
-Profesional --> "0..1" Domicilio
 
 
-Profesional --> "1..*" TituloProfesional
-TituloProfesional --> "1" CodigoTipoProfesional
+PrestadorProfesional --> "1..*" TituloProfesional
+
+
+
+Prestador --> "0..1" Domicilio
+Prestador --> "0..1" CodigoIdentidadGenero
+Prestador --> "*" MedioContacto
+Prestador --> "0..1" CodigoGeneroAdministrativo
+PrestadorProfesional --> "0..1" CodigoNacionalidad
+
+TituloProfesional --> "1" CodigoTipoPrestador
 EspecialidadProfesional --> "1" CodigoEspecialidadProfesional
-EspecialidadProfesional --> "1" TipoEspecialidadProfesional
+EspecialidadProfesional --> "1" CodigoTipoEspecialidadProfesional
 CodigoEspecialidadProfesional <|-- CodigoEspecialidadMedica
 CodigoEspecialidadProfesional <|-- CodigoEspecialidadBioquimica
 CodigoEspecialidadProfesional <|-- CodigoEspecialidadFarmaceutica
-Profesional --> "*" EspecialidadProfesional
-CodigoEspecialidadProfesional --> "1" TipoEspecialidadProfesional
-Profesional --> "0..1" IdentidadGenero
-Profesional --> "*" MedioContacto
-Profesional --> "0..1" CodigoGeneroAdministrativo
-Profesional --> "0..1" Nacionalidad
+PrestadorProfesional --> "*" EspecialidadProfesional
+CodigoEspecialidadProfesional --> "1" CodigoTipoEspecialidadProfesional
 
-link Profesional "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PractitionerProfesionalLE.html"
-link CodigoTipoProfesional "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTituloProfesional.html"
+
+link PrestadorProfesional "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PractitionerProfesionalLE.html"
+link PrestadorAdministrativo "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PractitionerAdministrativoLE.html"
+
+link CodigoTipoPrestador "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTituloProfesional.html"
 link CodigoEspecialidadBioquimica "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEspecialidadBioqca.html"
 link CodigoEspecialidadFarmaceutica "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEspecialidadFarmaceutica.html"
 link CodigoEspecialidadMedica "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEspecialidadMed.html"
@@ -115,20 +134,21 @@ link CodigoRegion "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosRe
 link CodigoPais "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
 link CodigoProvincia "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html"
 link CodigoComuna "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html"
-link Nacionalidad "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+link CodigoNacionalidad "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
 link CodigoGeneroAdministrativo "https://hl7.org/fhir/R4/valueset-administrative-gender.html"
-link IdentidadGenero "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSIdentidaddeGenero.html"
+link CodigoIdentidadGenero "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSIdentidaddeGenero.html"
 
 style CodigoRegion fill:#FFE6A5
 style CodigoPais fill:#FFE6A5
 style CodigoProvincia fill:#FFE6A5
 style CodigoComuna fill:#FFE6A5
-style CodigoTipoProfesional fill:#FFE6A5
-style TipoEspecialidadProfesional fill:#FFE6A5
+style CodigoTipoPrestador fill:#FFE6A5
+style CodigoTipoEspecialidadProfesional fill:#FFE6A5
 style CodigoEspecialidadProfesional fill:#FFE6A5,stroke-dasharray: 5 5
 style CodigoEspecialidadBioquimica fill:#FFE6A5
 style CodigoEspecialidadFarmaceutica fill:#FFE6A5
 style CodigoEspecialidadMedica fill:#FFE6A5
-style Nacionalidad fill:#FFE6A5
+style CodigoNacionalidad fill:#FFE6A5
 style CodigoGeneroAdministrativo fill:#FFE6A5
-style IdentidadGenero fill:#FFE6A5
+style CodigoIdentidadGenero fill:#FFE6A5
+

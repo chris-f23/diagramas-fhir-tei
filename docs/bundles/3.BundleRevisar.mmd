@@ -17,11 +17,11 @@ direction LR
 BundleRevisar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
 
-BundleRevisar --> "1..2" RolProfesional: Revisor(es?)
-link RolProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolProfesional.mmd"
+BundleRevisar --> "1..2" RolPrestacion: Revisor(es?)
+link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
 BundleRevisar --> "1" Profesional: Revisor
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Profesional.mmd"
+link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundleRevisar --> "1..2" EstablecimientoSalud: Revisor(es?)
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
@@ -32,12 +32,12 @@ note for BundleRevisar "En que casos podría ocurrir que
 hayan 2 roles revisores y 2 establecimientos revisores,
 pero solo 1 profesional revisor?"
 
-%% RolProfesional ..> "1" EstablecimientoSalud
-%% RolProfesional ..> "1" Profesional
+%% RolPrestacion ..> "1" EstablecimientoSalud
+%% RolPrestacion ..> "1" Profesional
 
 %% SolicitudInterconsulta ..> "1" Paciente: Subject
 %% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter
-%% SolicitudInterconsulta ..> "0..1" RolProfesional: Requester
+%% SolicitudInterconsulta ..> "0..1" RolPrestacion: Requester
 
 
 %% AtencionInicial ..> "1" Paciente: Subject

@@ -13,23 +13,25 @@ classDiagram
 direction LR
 
 
-
-BundlePriorizar --> "1" SolicitudInterconsulta
+BundleAgendar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
 
-BundlePriorizar --> "1..2" RolPrestacion: Priorizador(es?)
+BundleAgendar --> "1" PrestadorAdministrativo: Agendador
+link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+
+BundleAgendar --> "1" RolPrestacion: Agendador
+BundleAgendar --> "1" RolPrestacion: Atendedor
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
-BundlePriorizar --> "1" Profesional: Priorizador
+BundleAgendar --> "1" PrestadorProfesional: Atendedor
 link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
-BundlePriorizar --> "1..2" EstablecimientoSalud: Priorizador(es?)
+BundleAgendar --> "1" EstablecimientoSalud: Agendador/Atendador
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
 
-link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
-note for BundlePriorizar "En que casos podría ocurrir que
-hayan 2 roles priorizadores y 2 establecimientos priorizadores,
-pero solo 1 profesional priorizador?"
+
+BundleAgendar --> "1" Cita
+link Cita "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Cita.mmd"
 
 %% RolPrestacion ..> "1" EstablecimientoSalud
 %% RolPrestacion ..> "1" Profesional

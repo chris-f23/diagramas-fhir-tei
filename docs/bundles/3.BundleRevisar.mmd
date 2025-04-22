@@ -1,0 +1,55 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+
+
+BundleRevisar --> "1" SolicitudInterconsulta
+link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
+
+BundleRevisar --> "1..2" RolProfesional: Revisor(es?)
+link RolProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolProfesional.mmd"
+
+BundleRevisar --> "1" Profesional: Revisor
+link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Profesional.mmd"
+
+BundleRevisar --> "1..2" EstablecimientoSalud: Revisor(es?)
+link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
+
+BundleRevisar --> "*" SolicitudExamen: Examenes requeridos
+link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
+note for BundleRevisar "En que casos podría ocurrir que
+hayan 2 roles revisores y 2 establecimientos revisores,
+pero solo 1 profesional revisor?"
+
+%% RolProfesional ..> "1" EstablecimientoSalud
+%% RolProfesional ..> "1" Profesional
+
+%% SolicitudInterconsulta ..> "1" Paciente: Subject
+%% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter
+%% SolicitudInterconsulta ..> "0..1" RolProfesional: Requester
+
+
+%% AtencionInicial ..> "1" Paciente: Subject
+%% AtencionInicial ..> "1" CondicionDiagnostico: Diagnostico de inicio
+
+
+
+%% SolicitudInterconsulta ..> "0..1" CondicionDiagnostico: Diagnostico de inicio
+%% SolicitudInterconsulta ..> "*" AlergiaOIntolerancia: Alergias
+%% SolicitudInterconsulta ..> "0..1" Observacion: Indice de comorbilidad
+%% SolicitudInterconsulta ..> "0..1" Observacion: Es cuidador
+%% SolicitudInterconsulta ..> "0..1" Observacion: Tiene discapacidad
+%% SolicitudInterconsulta ..> "0..1" MotivoDerivacion: Motivo de derivación
+%% SolicitudInterconsulta ..> "*" SolicitudExamen: Solicitudes de examenes
+%% SolicitudInterconsulta ..> "*" Observacion: Resultados de examenes

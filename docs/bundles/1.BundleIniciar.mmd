@@ -23,42 +23,42 @@ class EstablecimientoSalud { }
 
 
 BundleIniciar --> "1" SolicitudInterconsulta
-link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/SolicitudInterconsulta.mmd"
+link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
 
 BundleIniciar --> "1" AtencionInicial
-link AtencionInicial "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/AtencionInicial.mmd"
+link AtencionInicial "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AtencionInicial.mmd"
 
 BundleIniciar --> "1" Paciente
-link Paciente "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Paciente.mmd"
+link Paciente "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Paciente.mmd"
 
 BundleIniciar --> "1" CondicionDiagnostico
-link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/CondicionDiagnostico.mmd"
+link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CondicionDiagnostico.mmd"
 
 BundleIniciar --> "0..1" Observacion: Indice comorbilidad
 BundleIniciar --> "0..1" Observacion: Es cuidador
 BundleIniciar --> "0..1" Observacion: Tiene discapacidad
 BundleIniciar --> "*" Observacion: Resultados de examenes
-link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Observacion.mmd"
+link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Observacion.mmd"
 
 BundleIniciar --> "*" AlergiaOIntolerancia
-link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/AlergiaOIntolerancia.mmd"
+link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AlergiaOIntolerancia.mmd"
 
 
 
 BundleIniciar --> "1" RolProfesional: Iniciador
-link RolProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/RolProfesional.mmd"
+link RolProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolProfesional.mmd"
 
 BundleIniciar --> "1" Profesional: Iniciador
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Profesional.mmd"
+link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Profesional.mmd"
 
 BundleIniciar --> "1" EstablecimientoSalud: Iniciador
-link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/EstablecimientoSalud.mmd"
+link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
 
 BundleIniciar --> "0..1" MotivoDerivacion
-link MotivoDerivacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/MotivoDerivacion.mmd"
+link MotivoDerivacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/MotivoDerivacion.mmd"
 
 BundleIniciar --> "*" SolicitudExamen
-link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/SolicitudExamen.mmd"
+link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
 
 
 %% RolProfesional ..> "1" EstablecimientoSalud

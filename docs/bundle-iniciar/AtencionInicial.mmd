@@ -10,8 +10,41 @@ config:
 ---
 
 classDiagram
-direction TB
+direction LR
 
 class AtencionInicial {
   id: UUID
+
+  idEnSistemaOrigen : VARCHAR
+
+  fechaInicio : DATETIME
+  fechaTermino : DATETIME
 }
+
+class CodigoConsecuenciaAtencion { <<ValueSet>> }
+link CodigoConsecuenciaAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSConsecuenciaAtencionCodigo.html"
+style CodigoConsecuenciaAtencion fill:#FFE6A5
+
+AtencionInicial --> "0..1" CodigoConsecuenciaAtencion
+
+class CodigoModalidadAtencion { <<ValueSet>> }
+link CodigoModalidadAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSModalidadAtencionCodigo.html"
+style CodigoModalidadAtencion fill:#FFE6A5
+
+AtencionInicial --> "1" CodigoModalidadAtencion
+
+class CodigoTipoAtencion { <<ValueSet>> }
+link CodigoTipoAtencion "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSTiposEncuentroCL.html"
+style CodigoTipoAtencion fill:#FFE6A5
+style CodigoTipoAtencion fill:#FFE6A5
+
+AtencionInicial --> "*" CodigoTipoAtencion
+
+class CodigoTipoAtencionRemota { <<ValueSet>> }
+link CodigoTipoAtencionRemota "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSTiposServicio.html"
+style CodigoTipoAtencionRemota fill:#FFE6A5
+
+AtencionInicial --> "0..1" CodigoTipoAtencionRemota
+
+note for CodigoTipoAtencion "binding(example)"
+note for CodigoTipoAtencionRemota "binding(example)"

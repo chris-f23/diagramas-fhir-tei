@@ -1,0 +1,70 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+
+BundleAtender --> "1" SolicitudInterconsulta
+link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
+
+BundleAtender --> "1" PrestadorProfesional: Atendedor
+link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+
+BundleAtender --> "1" RolPrestacion: Atendedor
+link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
+
+BundleAtender --> "1" EstablecimientoSalud: Atendedor
+link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
+
+BundleAtender --> "1" PlanAtencion: Plan de atención
+link PlanAtencion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/PlanAtencion.mmd" 
+
+BundleAtender --> "1..*" CondicionDiagnostico: Diagnosticos de tratamiento
+link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CondicionDiagnostico.mmd"
+
+BundleAtender --> "*" AlergiaOIntolerancia: Alergias
+link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AlergiaOIntolerancia.mmd"
+
+BundleAtender --> "*" Observacion: Resultados de examenes
+link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Observacion.mmd"
+
+
+BundleAtender --> "*" SolicitudMedicamento: Medicamentos
+link SolicitudMedicamento "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudMedicamento.mmd"
+
+BundleAtender --> "*" SolicitudExamen: Solicitudes de examenes
+link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
+
+BundleAtender --> "0..1" Observacion: Anamnesis
+
+
+%% RolPrestacion ..> "1" EstablecimientoSalud
+%% RolPrestacion ..> "1" Profesional
+
+%% SolicitudInterconsulta ..> "1" Paciente: Subject
+%% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter
+%% SolicitudInterconsulta ..> "0..1" RolPrestacion: Requester
+
+
+%% AtencionInicial ..> "1" Paciente: Subject
+%% AtencionInicial ..> "1" CondicionDiagnostico: Diagnostico de inicio
+
+
+
+%% SolicitudInterconsulta ..> "0..1" CondicionDiagnostico: Diagnostico de inicio
+%% SolicitudInterconsulta ..> "*" AlergiaOIntolerancia: Alergias
+%% SolicitudInterconsulta ..> "0..1" Observacion: Indice de comorbilidad
+%% SolicitudInterconsulta ..> "0..1" Observacion: Es cuidador
+%% SolicitudInterconsulta ..> "0..1" Observacion: Tiene discapacidad
+%% SolicitudInterconsulta ..> "0..1" MotivoDerivacion: Motivo de derivación
+%% SolicitudInterconsulta ..> "*" SolicitudExamen: Solicitudes de examenes
+%% SolicitudInterconsulta ..> "*" Observacion: Resultados de examenes

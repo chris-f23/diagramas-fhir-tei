@@ -1,0 +1,24 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+
+%% Como resultado de una atención, el prestador profesional dará un plan de atención, que indicara solicitudes de examenes y de medicamentos, entre otras cosas.
+
+class PlanAtencion {
+  id : UUID
+  requiereExamen: BIT
+  descripcion: VARCHAR
+}
+
+link PlanAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-CarePlanAtenderLE.html"

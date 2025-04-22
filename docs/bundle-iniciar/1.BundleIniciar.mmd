@@ -13,6 +13,15 @@ classDiagram
 direction LR
 
 
+
+class Profesional { }
+class RolProfesional { }
+class EstablecimientoSalud { }
+
+
+
+
+
 BundleIniciar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/SolicitudInterconsulta.mmd"
 
@@ -22,26 +31,27 @@ link AtencionInicial "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/
 BundleIniciar --> "1" Paciente
 link Paciente "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Paciente.mmd"
 
-BundleIniciar --> "1" CondicionDiagnosticoInicial
-link CondicionDiagnosticoInicial "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/CondicionDiagnosticoInicial.mmd"
+BundleIniciar --> "1" CondicionDiagnostico
+link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/CondicionDiagnostico.mmd"
 
-
-BundleIniciar --> "0..1" Observacion: Comorbilidad
-BundleIniciar --> "0..1" Observacion: Discapacidad
-BundleIniciar --> "0..1" Observacion: Cuidador
-BundleIniciar --> "*" Observacion: Resultado examen
+BundleIniciar --> "0..1" Observacion: Indice comorbilidad
+BundleIniciar --> "0..1" Observacion: Es cuidador
+BundleIniciar --> "0..1" Observacion: Tiene discapacidad
+BundleIniciar --> "*" Observacion: Resultados de examenes
 link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Observacion.mmd"
 
 BundleIniciar --> "*" AlergiaOIntolerancia
 link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/AlergiaOIntolerancia.mmd"
 
-BundleIniciar --> "1" RolProfesional
+
+
+BundleIniciar --> "1" RolProfesional: Iniciador
 link RolProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/RolProfesional.mmd"
 
-BundleIniciar --> "1" Profesional
+BundleIniciar --> "1" Profesional: Iniciador
 link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/Profesional.mmd"
 
-BundleIniciar --> "1" EstablecimientoSalud
+BundleIniciar --> "1" EstablecimientoSalud: Iniciador
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/EstablecimientoSalud.mmd"
 
 BundleIniciar --> "0..1" MotivoDerivacion
@@ -49,3 +59,26 @@ link MotivoDerivacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main
 
 BundleIniciar --> "*" SolicitudExamen
 link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/bundle-iniciar/SolicitudExamen.mmd"
+
+
+%% RolProfesional ..> "1" EstablecimientoSalud
+%% RolProfesional ..> "1" Profesional
+
+%% SolicitudInterconsulta ..> "1" Paciente: Subject
+%% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter
+%% SolicitudInterconsulta ..> "0..1" RolProfesional: Requester
+
+
+%% AtencionInicial ..> "1" Paciente: Subject
+%% AtencionInicial ..> "1" CondicionDiagnostico: Diagnostico de inicio
+
+
+
+%% SolicitudInterconsulta ..> "0..1" CondicionDiagnostico: Diagnostico de inicio
+%% SolicitudInterconsulta ..> "*" AlergiaOIntolerancia: Alergias
+%% SolicitudInterconsulta ..> "0..1" Observacion: Indice de comorbilidad
+%% SolicitudInterconsulta ..> "0..1" Observacion: Es cuidador
+%% SolicitudInterconsulta ..> "0..1" Observacion: Tiene discapacidad
+%% SolicitudInterconsulta ..> "0..1" MotivoDerivacion: Motivo de derivación
+%% SolicitudInterconsulta ..> "*" SolicitudExamen: Solicitudes de examenes
+%% SolicitudInterconsulta ..> "*" Observacion: Resultados de examenes

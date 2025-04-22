@@ -12,7 +12,7 @@ config:
 classDiagram
 direction LR
 
-class CondicionDiagnosticoInicial {
+class CondicionDiagnostico {
   id: UUID
   descripcion : VARCHAR NULL
   fechaEstimadaInicioDiagnostico : JSON NULL
@@ -24,13 +24,13 @@ class SeveridadDiagnostico { <<ValueSet>> }
 class CodigoDiagnostico { <<ValueSet>> }
 
 
-CondicionDiagnosticoInicial --> "0..1" EstadoClinicoDiagnostico
-CondicionDiagnosticoInicial --> "0..1" EstadoVerificacionDiagnostico
-CondicionDiagnosticoInicial --> "1" CategoriaDiagnostico
-CondicionDiagnosticoInicial --> "0..1" SeveridadDiagnostico
-CondicionDiagnosticoInicial --> "*" CodigoDiagnostico
+CondicionDiagnostico --> "0..1" EstadoClinicoDiagnostico
+CondicionDiagnostico --> "0..1" EstadoVerificacionDiagnostico
+CondicionDiagnostico --> "1" CategoriaDiagnostico
+CondicionDiagnostico --> "0..1" SeveridadDiagnostico
+CondicionDiagnostico --> "*" CodigoDiagnostico
 
-link CondicionDiagnosticoInicial "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-ConditionDiagnosticoLE.html"
+link CondicionDiagnostico "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-ConditionDiagnosticoLE.html"
 link EstadoClinicoDiagnostico "https://hl7.org/fhir/R4/valueset-condition-clinical.html"
 link EstadoVerificacionDiagnostico "https://hl7.org/fhir/R4/valueset-condition-ver-status.html"
 link CategoriaDiagnostico "https://hl7.org/fhir/R4/valueset-condition-category.html"

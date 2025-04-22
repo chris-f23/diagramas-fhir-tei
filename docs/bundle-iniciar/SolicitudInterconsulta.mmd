@@ -10,7 +10,7 @@ config:
 ---
 
 classDiagram
-direction TB
+direction LR
 
 class SolicitudInterconsulta {
   id : UUID
@@ -27,16 +27,29 @@ class SolicitudInterconsulta {
 }
 
 class PertinenciaInterconsulta { <<ValueSet>> }
+style PertinenciaInterconsulta fill:#FFE6A5
+
 class ModalidadAtencion { <<ValueSet>> }
-class MotivoDerivacion { <<ValueSet>> }
+style ModalidadAtencion fill:#FFE6A5
+
 class PrioridadSolicitud { <<ValueSet>> }
+style PrioridadSolicitud fill:#FFE6A5
+
 class ReferenciaOrigen { <<ValueSet>> }
+style ReferenciaOrigen fill:#FFE6A5
+
 class ReferenciaDestino { <<ValueSet>> }
+style ReferenciaDestino fill:#FFE6A5
 
 
 class MotivoCierreInterconsulta { <<ValueSet>> }
+style MotivoCierreInterconsulta fill:#FFE6A5
+
 class EstadoInterconsulta { <<ValueSet>> }
+style EstadoInterconsulta fill:#FFE6A5
+
 class EspecialidadMedicaDestino { <<ValueSet>> }
+style EspecialidadMedicaDestino fill:#FFE6A5
 
 
 SolicitudInterconsulta "*" --> "0..1" PertinenciaInterconsulta
@@ -50,27 +63,9 @@ SolicitudInterconsulta "*" --> "0..1" EspecialidadMedicaDestino: Especialidad
 SolicitudInterconsulta "*" --> "0..1" EspecialidadMedicaDestino: Subespecialidad
 
 
-style SolicitudInterconsulta fill:#e4d6f5,stroke:#000000
-style SolicitudInterconsulta_Alergia fill:#f8c3cd,stroke:#000000
-style SolicitudInterconsulta_Diagnostico fill:#f8c3cd,stroke:#000000
-style SolicitudInterconsulta_ObservacionIndiceComorbilidad fill:#f8c3cd,stroke:#000000
-style PertinenciaInterconsulta fill:#e4d6f5,stroke:#000000
-style ModalidadAtencion fill:#e4d6f5,stroke:#000000
-style MotivoDerivacion fill:#e4d6f5,stroke:#000000
-style PrioridadSolicitud fill:#e4d6f5,stroke:#000000
-style ReferenciaOrigen fill:#e4d6f5,stroke:#000000
-style ReferenciaDestino fill:#e4d6f5,stroke:#000000
-style MotivoCierreInterconsulta fill:#e4d6f5,stroke:#000000
-style EstadoInterconsulta fill:#e4d6f5,stroke:#000000
-style EspecialidadMedicaDestino fill:#e4d6f5,stroke:#000000
-style SolicitudInterconsulta_ObservacionPacienteCuidador fill:#f8c3cd,stroke:#000000
 
-link SolicitudInterconsulta_ObservacionPacienteCuidador "./ObservacionPacienteCuidador.mmd"
-link SolicitudInterconsulta_Diagnostico "./Diagnostico.mmd"
-link SolicitudInterconsulta_ObservacionIndiceComorbilidad "./ObservacionIndiceComorbilidad.mmd"
 link PertinenciaInterconsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSPertinenciaInterconsulta.html"
 link ModalidadAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSModalidadAtencionCodigo.html"
-link MotivoDerivacion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-QuestionnaireResponseIniciarLE.html"
 link PrioridadSolicitud "https://hl7.org/fhir/R4/valueset-request-priority.html"
 link ReferenciaOrigen "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSorigenInterconsulta.html"
 link ReferenciaDestino "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSDestinoReferenciaCodigo.html"

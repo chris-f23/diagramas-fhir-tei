@@ -1,0 +1,45 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class CondicionDiagnosticoInicial {
+  id: UUID
+  descripcion : VARCHAR NULL
+  fechaEstimadaInicioDiagnostico : JSON NULL
+}
+class EstadoClinicoDiagnostico { <<ValueSet>> }
+class EstadoVerificacionDiagnostico { <<ValueSet>> }
+class CategoriaDiagnostico { <<ValueSet>> }
+class SeveridadDiagnostico { <<ValueSet>> }
+class CodigoDiagnostico { <<ValueSet>> }
+
+
+CondicionDiagnosticoInicial --> "0..1" EstadoClinicoDiagnostico
+CondicionDiagnosticoInicial --> "0..1" EstadoVerificacionDiagnostico
+CondicionDiagnosticoInicial --> "1" CategoriaDiagnostico
+CondicionDiagnosticoInicial --> "0..1" SeveridadDiagnostico
+CondicionDiagnosticoInicial --> "*" CodigoDiagnostico
+
+link CondicionDiagnosticoInicial "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-ConditionDiagnosticoLE.html"
+link EstadoClinicoDiagnostico "https://hl7.org/fhir/R4/valueset-condition-clinical.html"
+link EstadoVerificacionDiagnostico "https://hl7.org/fhir/R4/valueset-condition-ver-status.html"
+link CategoriaDiagnostico "https://hl7.org/fhir/R4/valueset-condition-category.html"
+link SeveridadDiagnostico "https://hl7.org/fhir/R4/valueset-condition-severity.html"
+link Diagnostico "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTerminologiasDiag.html"
+
+style EstadoClinicoDiagnostico fill:#FFE6A5,stroke:#000000
+style EstadoVerificacionDiagnostico fill:#FFE6A5,stroke:#000000
+style CategoriaDiagnostico fill:#FFE6A5,stroke:#000000
+style SeveridadDiagnostico fill:#FFE6A5,stroke:#000000
+style CodigoDiagnostico fill:#FFE6A5,stroke:#000000
+

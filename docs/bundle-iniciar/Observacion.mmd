@@ -1,167 +1,107 @@
 ---
 config:
+  layout: elk
   theme: base
+  class:
+    hideEmptyMembersBox: true
   themeVariables:
     primaryBorderColor: "#000000"
     primaryColor: "#C9E6F0"
-    noteBackgroundColor: "#b00b00"
 ---
 
 classDiagram
-direction TB
+direction LR
 
-class SolicitudInterconsulta { }
-
-class SolicitudInterconsulta_Observacion {
-  + Id: UUID
-  + IdSolicitudInterconsulta : UUID
-
-  + IdTipoObservacion : INTEGER
-
-  %% Observation.status
-  + IdEstadoObservacion : UUID
-
-  %% Observation.category ()
-  + IdCategoriaObservacion : UUID = NULL
-  
-  %% Observation.effective[FechaEstimadaObservacion.type] = FechaEstimadaObservacion.value
-  + FechaOPeriodoRelevanciaClinica : JSON = NULL
-
-  %% Observation.value[x]
-  + ValorResultado : JSON = NULL
+class Observacion {
+  id: UUID
+  valor: JSON
+  codigo: JSON
+  fechaRelevanciaClinica : JSON NULL
+  interpretaciones : JSON NULL
+  componentesResultado : JSON NULL
 }
 
-note for TipoObservacion "
-INDICE_COMORBILIDAD:
-- codigo = 95385-1
-- sistema = http://loinc.org
 
-PACIENTE_ES_CUIDADOR:
-- codigo = ECICEP
-- sistema = https://interoperabilidad.minsal.cl/fhir/ig/tei/CodeSystem/CSTipoObservacionMinsal
-"
+%% class ObservacionIndiceComborbilidad {
+%% }
+
+%% class ObservacionPacienteEsCuidador {
+%%   valor: BIT
+%% }
+
+%% class ObservacionPacienteTieneDiscapacidad {
+%%   valor: BIT
+%% }
+
+
+class CodigoRiesgoIndiceComorbilidad { <<ValueSet>> }
+
+class CategoriaObservacion { <<ValueSet>> }
+
+
+
+class Observacion_Comentario {
+  texto: VARCHAR
+}
+
 
 class TipoObservacion {
-  <<ValueSet>>
-  + INDICE_COMORBILIDAD
-  + PACIENTE_ES_CUIDADOR
+  <<Enum>>
+  INDICE_COMORBILIDAD
+  PACIENTE_ES_CUIDADOR
+  PACIENTE_TIENE_DISCAPACIDAD
+  RESULTADO_EXAMEN
 }
 
-class EstadoObservacion {
-  <<ValueSet>> 
-  + REGISTERED
-  + PRELIMINARY
-  + FINAL
-  + ...
-}
+class EstadoObservacion { <<ValueSet>> }
 
-class SolicitudInterconsulta_Observacion_Categoria {
-  %% FK para llegar al padre.
-  + IdSolicitudInterconsultaObservacion : UUID
-  + IdCategoriaObservacion : UUID
-}
+class CodigoInterpretacionObservacion { <<ValueSet>> }
 
-class CategoriaObservacion {
-  <<ValueSet>>
-  + SOCIAL_HISTORY
-  + VITAL_SIGNS
-  + EXAM
-  + ...
-}
 
-class SolicitudInterconsulta_Observacion_Comentario {
-  %% FK para llegar al padre.
-  + IdSolicitudInterconsultaObservacionIndiceComorbilidad: UUID
 
-  %% Observation.comment
-  + Comentario : VARCHAR
-}
 
-class SolicitudInterconsulta_Observacion_ComponenteResultado {
-  %% FK para llegar al padre.
-  + IdSolicitudInterconsultaObservacionIndiceComorbilidad: UUID
+Observacion --> "*" Observacion_Comentario
 
-  %% Observation.component.code
-  + IdObservacionLOINC : UUID
 
-  %% Si es distinto de NULL debe tener la siguiente estructura:
-  %% {
-  %%   type: 'QUANTITY' | 'CODEABLECONCEPT' | 'STRING' | 'BOOLEAN' | 'INTEGER' | 'RANGE' | 'RATIO' | 'SAMPLEDDATA' | 'TIME' | 'DATETIME' | 'PERIOD'
-  %%   value: any
-  %% }
-  %% Donde 'value' es del tipo indicado en 'type', correspondiente a uno de los tipos de datos de FHIR',
-  %% Por ejemplo, el tipo 'DateTime' está definido en 'https://hl7.org/fhir/R4/datatypes.html#dateTime'.
-  %% Observation.component.value[x]
-  + ValorResultado : JSON = NULL
-}
+%% ObservacionPacienteEsCuidador --|> Observacion
+%% ObservacionPacienteTieneDiscapacidad --|> Observacion
+%% ObservacionIndiceComborbilidad --|> Observacion
+%% ObservacionResultadoExamen --|> Observacion
 
-class SolicitudInterconsulta_Observacion_ComponenteResultado_Interpretacion {
-  %% FK para llegar al padre.
-  + IdSolicitudInterconsultaObservacionIndiceComorbilidadComponenteResultado: UUID
+%% ObservacionIndiceComborbilidad --> "1" CodigoRiesgoIndiceComorbilidad: .valueCodeableConcept
+%% ObservacionResultadoExamen --> "1" CodigoExamen: .code
 
-  %% Observation.component.interpretation
-  + IdInterpretacionObservacion : UUID
-}
 
-class ObservacionLOINC {
+class CodigoExamen {
   <<ValueSet>>
 }
-krdh6335
-class SolicitudInterconsulta_Observacion_Interpretacion {
-  %% FK para llegar al padre.
-  + IdSolicitudInterconsultaObservacionIndiceComorbilidad: UUID
-  + IdInterpretacionObservacion : UUID
-}
+link CodigoExamen "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-CodigoExamen.html"
+style CodigoExamen fill:#FFE6A5
 
 
-class InterpretacionObservacion {
-  <<ValueSet>>
-  + HIGH
-  + LOW
-  + NEGATIVE
-  + ...
-}
+%% "Si 'Observacion.IdTipoObservacion' es
+%% - 'INDICE_COMORBILIDAD' entonces 'Observacion.ValorResultado' debe ser un valor obtenido desde la tabla 'CodigoRiesgoIndiceComorbilidad'
+%% - 'PACIENTE_ES_CUIDADOR' entonces 'Observacion.ValorResultado' debe ser un valor booleano/bit
+%%"
 
-class RiesgoIndiceComorbilidad {
-  <<ValueSet>>
-  + SIN_RIESGO
-  + RIESGO_LEVE
-  + RIESGO_MODERADO
-  + RIESGO_ALTO
-}
+Observacion --> "1" TipoObservacion
+Observacion --> "1" EstadoObservacion
+Observacion --> "*" CategoriaObservacion
+Observacion ..> "*" CodigoInterpretacionObservacion: Si 'interpretaciones' no es nulo,\n entonces 'interpretaciones' PUEDE contener uno o más códigos\nobtenidos desde 'CodigoInterpretacionObservacion'
+Observacion ..> "1" CodigoRiesgoIndiceComorbilidad: Si el tipo de observación es 'INDICE_COMORBILIDAD'\nentonces 'valor' debe ser un\ncódigo obtenido desde esta tabla.
+Observacion ..> "1" CodigoExamen: Si el tipo de observación es 'RESULTADO_EXAMEN'\nentonces 'codigo' debe ser un\ncódigo obtenido desde esta tabla.
 
-note "Si 'SolicitudInterconsulta_Observacion.IdTipoObservacion' es
-- 'INDICE_COMORBILIDAD' entonces 'SolicitudInterconsulta_Observacion.ValorResultado' debe ser un valor obtenido desde la tabla 'RiesgoIndiceComorbilidad'
-- 'PACIENTE_ES_CUIDADOR' entonces 'SolicitudInterconsulta_Observacion.ValorResultado' debe ser un valor booleano/bit
-"
-
-SolicitudInterconsulta "1" --> "0..1" SolicitudInterconsulta_Observacion
-
-SolicitudInterconsulta_Observacion "*" --> "1" EstadoObservacion
-SolicitudInterconsulta_Observacion "*" --> "1" TipoObservacion
-SolicitudInterconsulta_Observacion "1" --> "*" SolicitudInterconsulta_Observacion_Categoria
-SolicitudInterconsulta_Observacion "1" --> "*" SolicitudInterconsulta_Observacion_Comentario
-SolicitudInterconsulta_Observacion "1" --> "*" SolicitudInterconsulta_Observacion_ComponenteResultado
-SolicitudInterconsulta_Observacion "1" --> "*" SolicitudInterconsulta_Observacion_Interpretacion
-
-SolicitudInterconsulta_Observacion_Interpretacion "*" --> "1" InterpretacionObservacion
-SolicitudInterconsulta_Observacion_Categoria "1" --> "1" CategoriaObservacion
-
-SolicitudInterconsulta_Observacion_ComponenteResultado "*" --> "1" ObservacionLOINC
-SolicitudInterconsulta_Observacion_ComponenteResultado_Interpretacion "*" --> "1" InterpretacionObservacion
-SolicitudInterconsulta_Observacion_ComponenteResultado "1" --> "*" SolicitudInterconsulta_Observacion_ComponenteResultado_Interpretacion
 
 style SolicitudInterconsulta fill:#C4D9FF,stroke:#000000
-style InterpretacionObservacion fill:#FFE6A5,stroke:#000000
-style RiesgoIndiceComorbilidad fill:#FFE6A5,stroke:#000000
+style CodigoInterpretacionObservacion fill:#FFE6A5,stroke:#000000
+style CodigoRiesgoIndiceComorbilidad fill:#FFE6A5,stroke:#000000
 style CategoriaObservacion fill:#FFE6A5,stroke:#000000
 style EstadoObservacion fill:#FFE6A5,stroke:#000000
 style TipoObservacion fill:#FFE6A5,stroke:#000000
-style ObservacionLOINC fill:#FFE6A5,stroke:#000000
 
-link InterpretacionObservacion "https://hl7.org/fhir/R4/valueset-observation-interpretation.html"
-link RiesgoIndiceComorbilidad "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSIndicecomorbilidad.html"
-link ObservacionLOINC "https://hl7.org/fhir/R4/valueset-observation-codes.html"
+link CodigoInterpretacionObservacion "https://hl7.org/fhir/R4/valueset-observation-interpretation.html"
+link CodigoRiesgoIndiceComorbilidad "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSIndicecomorbilidad.html"
 link CategoriaObservacion "https://hl7.org/fhir/R4/valueset-observation-category.html"
 link EstadoObservacion "https://hl7.org/fhir/R4/valueset-observation-status.html"
 link TipoObservacion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-TipoDeObservacion.html"
+

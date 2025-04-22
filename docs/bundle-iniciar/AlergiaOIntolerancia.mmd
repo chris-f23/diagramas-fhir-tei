@@ -1,0 +1,68 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class AlergiaOIntolerancia {
+  id : UUID
+  fechaEstimadaDeteccion : JSON NULL
+}
+
+class EventoAdverso { }
+
+class ManifestacionAlergia { <<ValueSet>> }
+
+class SeveridadAlergia { <<ValueSet>> }
+
+class CodigoAlergia { <<ValueSet>> }
+
+class CriticalidadAlergia { <<ValueSet>> }
+
+class TipoAlergia { <<ValueSet>> }
+
+class EstadoClinicoAlergia { <<ValueSet>> }
+
+class EstadoVerificacionAlergia { <<ValueSet>> }
+
+
+EventoAdverso --> "1..*" ManifestacionAlergia
+EventoAdverso --> "0..1" SeveridadAlergia
+
+AlergiaOIntolerancia --> "*" EventoAdverso
+
+AlergiaOIntolerancia --> "1" CodigoAlergia
+
+
+AlergiaOIntolerancia --> "0..1" CriticalidadAlergia
+
+AlergiaOIntolerancia --> "0..1" TipoAlergia
+
+AlergiaOIntolerancia --> "0..1" EstadoClinicoAlergia
+
+AlergiaOIntolerancia --> "0..1" EstadoVerificacionAlergia
+%% AlergiaOIntolerancia ..> "1" Paciente
+
+style ManifestacionAlergia fill:#FFE6A5
+style SeveridadAlergia fill:#FFE6A5
+style CodigoAlergia fill:#FFE6A5
+style CriticalidadAlergia fill:#FFE6A5
+style TipoAlergia fill:#FFE6A5
+style EstadoClinicoAlergia fill:#FFE6A5
+style EstadoVerificacionAlergia fill:#FFE6A5
+
+link ManifestacionAlergia "https://hl7.org/fhir/R4/valueset-clinical-findings.html"
+link SeveridadAlergia "https://hl7.org/fhir/R4/valueset-reaction-event-severity.html"
+link CodigoAlergia "https://hl7.org/fhir/R4/valueset-allergyintolerance-code.html"
+link CriticalidadAlergia "https://hl7.org/fhir/R4/valueset-allergy-intolerance-criticality.html"
+link TipoAlergia "https://hl7.org/fhir/R4/valueset-allergy-intolerance-type.html"
+link EstadoClinicoAlergia "https://hl7.org/fhir/R4/valueset-allergyintolerance-clinical.html"
+link EstadoVerificacionAlergia "https://hl7.org/fhir/R4/valueset-allergyintolerance-verification.html"

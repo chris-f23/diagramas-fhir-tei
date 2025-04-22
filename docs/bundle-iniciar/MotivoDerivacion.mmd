@@ -1,0 +1,32 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class MotivoDerivacion {
+  id: UUID
+
+  %% El motivo de derivación de la solicitud de interconsulta.
+  motivo: JSON NULL
+}
+
+class EstadoMotivoDerivacion {
+  <<ValueSet>>
+}
+
+style EstadoMotivoDerivacion fill:#FFE6A5
+
+
+MotivoDerivacion --> "1" EstadoMotivoDerivacion
+link EstadoMotivoDerivacion "https://hl7.org/fhir/R4/valueset-questionnaire-answers-status.html"
+style EstadoMotivoDerivacion fill:#FFE6A5
+

@@ -1,0 +1,59 @@
+---
+config:
+  theme: forest
+---
+
+sequenceDiagram
+
+autonumber
+
+participant A as APS o HCC
+participant M as MINSAL
+
+box rgb(232,244,234) HRA
+  participant INT AS API Integración FHIR TEI
+  participant BD as BD
+end
+
+A ->> M: Enviar 'Bundle Iniciar'
+A ->> M: Enviar 'Bundle Referenciar'
+A ->> M: Enviar 'Bundle Revisar'
+
+note over A, INT: En este punto la solicitud de interconsulta es pertinente y tiene destino al HRA
+
+A ->> INT: Enviar 'Bundle Notificar Destino'
+activate INT
+%% INT -->>A: OK, mensaje recibido y procesando en segundo plano
+
+INT ->> BD: Iniciar transacción
+activate BD
+
+
+INT ->> BD: Guardar motivo de derivación (opcional)
+INT ->> BD: Crear paciente si no existe
+INT ->> BD: Crear establecimiento de salud iniciador si no existe
+INT ->> BD: Crear prestador profesional iniciador si no existe
+INT ->> BD: Guardar indice de comorbilidad del paciente (opcional)
+INT ->> BD: Guardar indicador de si el paciente es cuidador (opcional)
+INT ->> BD: Guardar indicador de si el paciente tiene discapacidad (opcional)
+INT ->> BD: Guardar solicitudes de examenes
+INT ->> BD: Guardar resultados de examenes
+INT ->> BD: Guardar datos de la atención inicial
+INT ->> BD: Guardar condición de diagnostico inicial
+INT ->> BD: Guardar datos de la solicitud de interconsulta
+INT ->> BD: Confirmar transacción
+
+INT ->> BD: Crear prestador profesional referenciador si no existe
+
+INT ->> BD: Crear prestador profesional revisor si no existe
+INT ->> BD: Guardar solicitudes de examenes
+
+INT ->> BD: Confirmar transacción
+
+BD -->> INT: OK
+deactivate BD
+
+INT -->> A: OK, mensaje procesado correctamente
+deactivate INT
+
+note over A, INT: El mensaje es un todo o nada.

@@ -12,6 +12,9 @@ config:
 classDiagram
 direction LR
 
+BundleAgendar --> "1" CabeceraMensaje
+link CabeceraMensaje "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CabeceraMensaje.mmd"
+
 
 BundleAgendar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
@@ -24,7 +27,7 @@ BundleAgendar --> "1" RolPrestacion: Atendedor
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
 BundleAgendar --> "1" PrestadorProfesional: Atendedor
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundleAgendar --> "1" EstablecimientoSalud: Agendador/Atendador
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"

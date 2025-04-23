@@ -12,12 +12,14 @@ config:
 classDiagram
 direction LR
 
+BundleAtender --> "1" CabeceraMensaje
+link CabeceraMensaje "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CabeceraMensaje.mmd"
 
 BundleAtender --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
 
 BundleAtender --> "1" PrestadorProfesional: Atendedor
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundleAtender --> "1" RolPrestacion: Atendedor
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
@@ -25,17 +27,18 @@ link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/do
 BundleAtender --> "1" EstablecimientoSalud: Atendedor
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
 
-BundleAtender --> "1" PlanAtencion: Plan de atención
-link PlanAtencion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/PlanAtencion.mmd" 
+BundleAtender --> "1" AtencionInterconsulta
+link AtencionInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AtencionInterconsulta.mmd"
 
-BundleAtender --> "1..*" CondicionDiagnostico: Diagnosticos de tratamiento
+BundleAtender --> "1..*" CondicionDiagnostico: Diagnosticos de la atención
 link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CondicionDiagnostico.mmd"
+
+BundleAtender --> "1" PlanAtencion
+link PlanAtencion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/PlanAtencion.mmd" 
 
 BundleAtender --> "*" AlergiaOIntolerancia: Alergias
 link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AlergiaOIntolerancia.mmd"
 
-BundleAtender --> "*" Observacion: Resultados de examenes
-link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Observacion.mmd"
 
 
 BundleAtender --> "*" SolicitudMedicamento: Medicamentos
@@ -44,8 +47,9 @@ link SolicitudMedicamento "https://github.com/chris-f23/diagramas-fhir-tei/blob/
 BundleAtender --> "*" SolicitudExamen: Solicitudes de examenes
 link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
 
+BundleAtender --> "*" Observacion: Resultados de examenes
 BundleAtender --> "0..1" Observacion: Anamnesis
-
+link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Observacion.mmd"
 
 %% RolPrestacion ..> "1" EstablecimientoSalud
 %% RolPrestacion ..> "1" Profesional

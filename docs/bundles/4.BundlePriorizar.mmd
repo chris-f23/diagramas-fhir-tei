@@ -12,7 +12,8 @@ config:
 classDiagram
 direction LR
 
-
+BundlePriorizar --> "1" CabeceraMensaje
+link CabeceraMensaje "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CabeceraMensaje.mmd"
 
 BundlePriorizar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
@@ -20,8 +21,8 @@ link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blo
 BundlePriorizar --> "1..2" RolPrestacion: Priorizador(es?)
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
-BundlePriorizar --> "1" Profesional: Priorizador
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+BundlePriorizar --> "1" PrestadorProfesional: Priorizador
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundlePriorizar --> "1..2" EstablecimientoSalud: Priorizador(es?)
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"

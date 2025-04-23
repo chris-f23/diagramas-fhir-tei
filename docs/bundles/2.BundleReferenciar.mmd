@@ -13,6 +13,9 @@ classDiagram
 direction LR
 
 
+BundleReferenciar --> "1" CabeceraMensaje
+link CabeceraMensaje "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CabeceraMensaje.mmd"
+
 BundleReferenciar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
 
@@ -21,8 +24,8 @@ BundleReferenciar --> "1" RolPrestacion: Referenciador
 BundleReferenciar --> "1" RolPrestacion: Atendedor
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
-BundleReferenciar --> "1" Profesional: Referenciador
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+BundleReferenciar --> "1" PrestadorProfesional: Referenciador
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundleReferenciar --> "1" EstablecimientoSalud: Referenciador
 BundleReferenciar --> "1" EstablecimientoSalud: Atendedor

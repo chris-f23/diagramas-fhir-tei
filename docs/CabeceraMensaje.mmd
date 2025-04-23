@@ -1,0 +1,26 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class CabeceraMensaje {
+  id: UUID
+
+  nombreSistemaOrigen: VARCHAR
+  endpointOrigen: VARCHAR
+}
+
+class CodigoTipoEvento { <<ValueSet>> }
+link CodigoTipoEvento "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTipoEventoLE.html"
+style CodigoTipoEvento fill:#FFE6A5
+
+CabeceraMensaje --> "1" CodigoTipoEvento

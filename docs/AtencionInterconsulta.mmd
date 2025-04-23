@@ -1,0 +1,57 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+class AtencionInterconsulta {
+  id: UUID
+
+  esPertinente : BIT
+  detalleMotivoNoPertinencia : VARCHAR NULL
+  fechaInicio : DATETIME
+  fechaTermino : DATETIME
+}
+
+class CodigoConsecuenciaAtencion { <<ValueSet>> }
+link CodigoConsecuenciaAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSConsecuenciaAtencionCodigo.html"
+style CodigoConsecuenciaAtencion fill:#FFE6A5
+
+AtencionInterconsulta --> "0..1" CodigoConsecuenciaAtencion
+
+
+class CodigoModalidadAtencion { <<ValueSet>> }
+link CodigoModalidadAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSModalidadAtencionCodigo.html"
+style CodigoModalidadAtencion fill:#FFE6A5
+
+AtencionInterconsulta --> "1" CodigoModalidadAtencion
+
+class CodigoTipoConsulta { <<ValueSet >> }
+link CodigoTipoConsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSTipoConsulta.html"
+style CodigoTipoConsulta fill:#FFE6A5
+
+AtencionInterconsulta --> "0..1" CodigoTipoConsulta
+
+class CodigoTipoAtencionRemota { <<ValueSet>> }
+link CodigoTipoAtencionRemota "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSTiposServicio.html"
+style CodigoTipoAtencionRemota fill:#FFE6A5
+
+AtencionInterconsulta --> "0..1" CodigoTipoAtencionRemota
+
+note for CodigoTipoAtencionRemota "binding(example)"
+
+class CodigoMotivoAtencion { <<ValueSet>> }
+link CodigoMotivoAtencion "https://hl7.org/fhir/R4/valueset-encounter-reason.html"
+style CodigoMotivoAtencion fill:#FFE6A5
+
+note for CodigoMotivoAtencion "binding(preferred)"
+
+AtencionInterconsulta --> "*" CodigoMotivoAtencion

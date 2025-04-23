@@ -14,13 +14,13 @@ direction LR
 
 
 
-class Profesional { }
+class PrestadorProfesional { }
 class RolPrestacion { }
 class EstablecimientoSalud { }
 
 
-
-
+BundleIniciar --> "1" CabeceraMensaje
+link CabeceraMensaje "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CabeceraMensaje.mmd"
 
 BundleIniciar --> "1" SolicitudInterconsulta
 link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
@@ -48,8 +48,8 @@ link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/
 BundleIniciar --> "1" RolPrestacion: Iniciador
 link RolPrestacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/RolPrestacion.mmd"
 
-BundleIniciar --> "1" Profesional: Iniciador
-link Profesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+BundleIniciar --> "1" PrestadorProfesional: Iniciador
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
 
 BundleIniciar --> "1" EstablecimientoSalud: Iniciador
 link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
@@ -62,7 +62,7 @@ link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/
 
 
 %% RolPrestacion ..> "1" EstablecimientoSalud
-%% RolPrestacion ..> "1" Profesional
+%% RolPrestacion ..> "1" PrestadorProfesional
 
 %% SolicitudInterconsulta ..> "1" Paciente: Subject
 %% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter

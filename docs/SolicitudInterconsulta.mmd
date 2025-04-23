@@ -52,17 +52,15 @@ class EspecialidadMedicaDestino { <<ValueSet>> }
 style EspecialidadMedicaDestino fill:#FFE6A5
 
 
-SolicitudInterconsulta "*" --> "0..1" PertinenciaInterconsulta
-SolicitudInterconsulta "*" --> "0..1" PrioridadSolicitud
-SolicitudInterconsulta "*" --> "0..1" ReferenciaOrigen
-SolicitudInterconsulta "*" --> "0..1" ModalidadAtencion
-SolicitudInterconsulta "*" --> "0..1" ReferenciaDestino
-SolicitudInterconsulta "*" --> "0..1" MotivoCierreInterconsulta
-SolicitudInterconsulta "*" --> "0..1" EstadoInterconsulta
-SolicitudInterconsulta "*" --> "0..1" EspecialidadMedicaDestino: Especialidad
-SolicitudInterconsulta "*" --> "0..1" EspecialidadMedicaDestino: Subespecialidad
-
-
+SolicitudInterconsulta --> "0..1" PertinenciaInterconsulta
+SolicitudInterconsulta --> "0..1" PrioridadSolicitud
+SolicitudInterconsulta --> "0..1" ReferenciaOrigen
+SolicitudInterconsulta --> "0..1" ModalidadAtencion
+SolicitudInterconsulta --> "0..1" ReferenciaDestino
+SolicitudInterconsulta --> "0..1" MotivoCierreInterconsulta
+SolicitudInterconsulta --> "0..1" EstadoInterconsulta
+SolicitudInterconsulta --> "0..1" EspecialidadMedicaDestino: Especialidad
+SolicitudInterconsulta --> "0..1" EspecialidadMedicaDestino: Subespecialidad
 
 link PertinenciaInterconsulta "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSPertinenciaInterconsulta.html"
 link ModalidadAtencion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSModalidadAtencionCodigo.html"

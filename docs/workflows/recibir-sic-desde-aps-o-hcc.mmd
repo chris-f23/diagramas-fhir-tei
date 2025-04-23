@@ -29,7 +29,7 @@ H ->> BD: Iniciar transacción
 activate BD
 H ->> BD: Crear o actualizar paciente
 
-alt El establecimiento de salud solicitante no existe en la base de datos
+opt El establecimiento de salud solicitante no existe en la base de datos
   H ->> BD: Crear establecimiento de salud
 end
 

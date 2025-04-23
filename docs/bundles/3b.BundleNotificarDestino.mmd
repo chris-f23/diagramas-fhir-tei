@@ -1,0 +1,74 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+BundleNotificarDestino --> "1" SolicitudInterconsulta
+link SolicitudInterconsulta "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudInterconsulta.mmd"
+
+BundleNotificarDestino --> "1" AtencionInicial
+link AtencionInicial "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AtencionInicial.mmd"
+
+BundleNotificarDestino --> "1" Paciente
+link Paciente "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Paciente.mmd"
+
+BundleNotificarDestino --> "1" CondicionDiagnostico
+link CondicionDiagnostico "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/CondicionDiagnostico.mmd"
+
+BundleNotificarDestino --> "0..1" Observacion: Indice comorbilidad
+BundleNotificarDestino --> "0..1" Observacion: Es cuidador
+BundleNotificarDestino --> "0..1" Observacion: Tiene discapacidad
+BundleNotificarDestino --> "*" Observacion: Resultados de examenes
+link Observacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Observacion.mmd"
+
+BundleNotificarDestino --> "*" AlergiaOIntolerancia
+link AlergiaOIntolerancia "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/AlergiaOIntolerancia.mmd"
+
+BundleNotificarDestino --> "1" PrestadorProfesional: Iniciador
+BundleNotificarDestino --> "1" PrestadorProfesional: Referenciador
+BundleNotificarDestino --> "1" PrestadorProfesional: Revisor
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+
+
+link PrestadorProfesional "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/Prestador.mmd"
+
+BundleNotificarDestino --> "1" EstablecimientoSalud: Establecimiento solicitante
+link EstablecimientoSalud "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/EstablecimientoSalud.mmd"
+
+BundleNotificarDestino --> "0..1" MotivoDerivacion
+link MotivoDerivacion "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/MotivoDerivacion.mmd"
+
+BundleNotificarDestino --> "*" SolicitudExamen
+link SolicitudExamen "https://github.com/chris-f23/diagramas-fhir-tei/blob/main/docs/SolicitudExamen.mmd"
+
+
+%% RolPrestacion ..> "1" EstablecimientoSalud
+%% RolPrestacion ..> "1" PrestadorProfesional
+
+%% SolicitudInterconsulta ..> "1" Paciente: Subject
+%% SolicitudInterconsulta ..> "0..1" AtencionInicial: Encounter
+%% SolicitudInterconsulta ..> "0..1" RolPrestacion: Requester
+
+
+%% AtencionInicial ..> "1" Paciente: Subject
+%% AtencionInicial ..> "1" CondicionDiagnostico: Diagnostico de inicio
+
+
+
+%% SolicitudInterconsulta ..> "0..1" CondicionDiagnostico: Diagnostico de inicio
+%% SolicitudInterconsulta ..> "*" AlergiaOIntolerancia: Alergias
+%% SolicitudInterconsulta ..> "0..1" Observacion: Indice de comorbilidad
+%% SolicitudInterconsulta ..> "0..1" Observacion: Es cuidador
+%% SolicitudInterconsulta ..> "0..1" Observacion: Tiene discapacidad
+%% SolicitudInterconsulta ..> "0..1" MotivoDerivacion: Motivo de derivación
+%% SolicitudInterconsulta ..> "*" SolicitudExamen: Solicitudes de examenes
+%% SolicitudInterconsulta ..> "*" Observacion: Resultados de examenes

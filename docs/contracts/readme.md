@@ -1,6 +1,6 @@
-## Procedimientos almacenados
+# Procedimientos almacenados
 
-### General
+## General
 
 Un procedimiento almacenado solo puede tener 2 caminos:
 
@@ -13,11 +13,11 @@ Un procedimiento almacenado solo puede tener 2 caminos:
     - `state = 40`: Ocurrió un error al validar los parámetros. No es recomendable reintentar la operación con los mismos parámetros.
   - El contrato del procedimiento puede definir nuevos códigos de estado, de ser necesario manejar algún caso especial.
 
-### Tipos de procedimientos
+## Tipos de procedimientos
 
 Un procedimiento almacenado debe tener un único objetivo bien definido. El objetivo debe ser claramente identificado en el nombre del procedimiento, el cuál debe seguir las siguientes reglas.
 
-#### Procedimientos que obtienen información
+### Procedimientos que obtienen información
 
 Para encontrar un recurso dado uno de sus [identificadores de FHIR](https://hl7.org/fhir/R4/datatypes.html#identifier):
 
@@ -31,4 +31,18 @@ Los parámetros de este procedimiento deben ser
 
 El resultado del procedimiento debe ser una tabla con una única fila la cuál debe contener parte del recurso identificado. Una de las columnas de esta fila debe ser el 'id' interno del recurso, el cuál deberá usarse para cualquier otra operación sobre el recurso.
 
-Ejemplos: [`INT_TEI_Paciente_GetByIdentifier`](./paciente/get-by-identifier.md)
+Ejemplos
+
+- [`INT_TEI_Paciente_GetByIdentifier`](./paciente/get-by-identifier.md)
+
+### Procedimientos que crean recursos
+
+Para crear un recurso:
+
+`INT_TEI_[NombreDelRecurso]_Create`
+
+El resultado del procedimiento debe ser una tabla con una única fila, la cuál debe contener parte del recurso creado. Una de las columnas de esta fila debe ser el 'id' interno del recurso, el cuál deberá usarse para cualquier otra operación sobre el recurso.
+
+Ejemplos
+
+- [`INT_TEI_Paciente_Create`](./paciente/create.md)

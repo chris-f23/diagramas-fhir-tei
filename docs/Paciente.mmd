@@ -60,13 +60,17 @@ note for Domicilio "extension:SituacionCalle no tiene sentido a este nivel"
 class Domicilio {
   id : UUID
   direccion: VARCHAR
-  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
+  codigoUso: 'home' | 'work' | 'temp' | 'old' | 'billing'
 }
 
 class CodigoRegion { <<ValueSet>> }
+style CodigoRegion fill:#FFE6A5
 
 class CodigoProvincia { <<ValueSet>> }
+style CodigoProvincia fill:#FFE6A5
+
 class CodigoComuna { <<ValueSet>> }
+style CodigoComuna fill:#FFE6A5
 
 Domicilio --> "0..1" CodigoPais
 Domicilio --> "0..1" CodigoRegion

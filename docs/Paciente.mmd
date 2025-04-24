@@ -120,10 +120,10 @@ Paciente --> "0..1" CodigoPuebloOriginario
 
 class MedioContacto {
   id: UUID
-  tipo: 'CORREO' | 'TELEFONO'
-  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
+  codigoSistema: 'phone' | 'email'
+  codigoUso: 'home' | 'work' | 'temp' | 'old' | 'mobile' | NULL
   valor: VARCHAR
-  ordenPreferencia: INTEGER
+  ordenPreferencia: INTEGER | NULL
 }
 
 Paciente --> "1..*" MedioContacto

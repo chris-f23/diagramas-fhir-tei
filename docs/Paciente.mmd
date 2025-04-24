@@ -29,10 +29,51 @@ class Paciente {
 
 }
 
-class IdentificadorPaciente { <<JSON>>}
+class IdentificadorPaciente {
+  valor : VARCHAR
+}
+
 link IdentificadorPaciente "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PatientLE-definitions.html#Patient.identifier"
 
 Paciente --> "1..*" IdentificadorPaciente
+
+class CodigoUsoIdentificador { <<ValueSet>> }
+link CodigoUsoIdentificador "https://hl7.org/fhir/R4/valueset-identifier-use.html"
+style CodigoUsoIdentificador fill:#FFE6A5
+
+IdentificadorPaciente --> "0..1" CodigoUsoIdentificador
+
+
+class CodigoTipoIdentificador { <<ValueSet>> }
+link CodigoTipoIdentificador "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSTipoIdentificador.html"
+style CodigoTipoIdentificador fill:#FFE6A5
+
+IdentificadorPaciente --> "1" CodigoTipoIdentificador
+
+class CodigoPais { <<ValueSet>> }
+link CodigoPais "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+style CodigoPais fill:#FFE6A5
+
+IdentificadorPaciente --> "1" CodigoPais: País que emitió el documento de identificación
+
+note for Domicilio "extension:SituacionCalle no tiene sentido a este nivel"
+class Domicilio {
+  id : UUID
+  direccion: VARCHAR
+  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
+}
+
+class CodigoRegion { <<ValueSet>> }
+
+class CodigoProvincia { <<ValueSet>> }
+class CodigoComuna { <<ValueSet>> }
+
+Domicilio --> "0..1" CodigoPais
+Domicilio --> "0..1" CodigoRegion
+Domicilio --> "0..1" CodigoProvincia
+Domicilio --> "0..1" CodigoComuna
+
+Paciente --> "*" Domicilio
 
 
 class CodigoIdentidadGenero { <<ValueSet>> }
@@ -82,27 +123,6 @@ class MedioContacto {
 }
 
 Paciente --> "1..*" MedioContacto
-
-note for Domicilio "extension:SituacionCalle no tiene sentido a este nivel"
-class Domicilio {
-  id : UUID
-  direccion: VARCHAR
-  uso: 'CASA' | 'TRABAJO' | 'TEMPORAL'
-}
-class CodigoPais { <<ValueSet>> }
-
-class CodigoRegion { <<ValueSet>> }
-
-class CodigoProvincia { <<ValueSet>> }
-class CodigoComuna { <<ValueSet>> }
-
-Domicilio --> "0..1" CodigoPais
-Domicilio --> "0..1" CodigoRegion
-Domicilio --> "0..1" CodigoProvincia
-Domicilio --> "0..1" CodigoComuna
-
-Paciente --> "*" Domicilio
-
 
 class CodigoEstadoCivil { <<ValueSet>> }
 link CodigoEstadoCivil "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEstadoCivil.html"

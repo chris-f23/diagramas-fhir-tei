@@ -18,14 +18,14 @@ Si se encontró al paciente, el resultado será una tabla con solo una fila, la 
 
 ```sql
 DECLARE @resultado TABLE (
-  id INT
+  id UNIQUEIDENTIFIER
 );
 ```
 
 ### Llamada de ejemplo
 
 ```sql
-/* Obtiene a un paciente dado su identificador de tipo RUN. */
+/* Obtiene el identificador interno del paciente dado su RUT (1121557-2). */
 EXECUTE INT_TEI_Paciente_GetByIdentifier
   @valor = '1121557-2',
   @sistema = 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSTipoIdentificador',

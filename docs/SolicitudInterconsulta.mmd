@@ -14,8 +14,6 @@ direction LR
 
 class SolicitudInterconsulta {
   id : UUID
-  idMinsal : UUID NULL
-
   fechaSolicitud : DATETIME
   requiereExamen : BIT NULL
   esAtencionPreferente : BIT NULL
@@ -25,6 +23,13 @@ class SolicitudInterconsulta {
   fundamentoPriorizacion : VARCHAR NULL
   motivoNoPertinencia : VARCHAR NULL
 }
+
+class IdentificadorSolicitudInterconsulta {
+  codigoUso: 'usual' | 'official' | 'temp' | 'secondary' | 'old' | NULL
+  valor: VARCHAR NULL
+}
+
+SolicitudInterconsulta --> "*" IdentificadorSolicitudInterconsulta
 
 class PertinenciaInterconsulta { <<ValueSet>> }
 style PertinenciaInterconsulta fill:#FFE6A5

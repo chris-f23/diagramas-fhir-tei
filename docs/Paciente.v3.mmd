@@ -1,0 +1,164 @@
+classDiagram
+
+class Paciente {
+  Id : UNIQUEIDENTIFIER
+  PerteneceAPuebloOriginario : BIT
+  PerteneceAPuebloAfrodescendiente : BIT | NULL
+  NombreOficial : VARCHAR 50 | NULL
+  ApellidoPaterno : VARCHAR 50
+  ApellidoMaterno : VARCHAR 50
+  NombreSocial : VARCHAR 50 | NULL
+  FechaNacimiento : DATETIME
+  FechaFallecimiento : DATETIME | NULL
+  IdIdentidadGenero : INTEGER
+  IdSexoAdministrativo : INTEGER
+  IdSexoBiologico : INTEGER | NULL
+  IdNacionalidad : INTEGER
+  IdPaisOrigen : INTEGER
+  IdReligion : INTEGER | NULL
+  IdPuebloOriginario : INTEGER | NULL
+  IdEstadoCivil : INTEGER | NULL
+}
+
+class LenguajePaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  IdLenguaje : INTEGER
+}
+
+class IdentificadorPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  IdTipoIdentificadorPaciente : INTEGER
+  Uso : 'usual' | 'official' | 'temp' | 'secondary' | 'old'
+  Valor : VARCHAR 255
+  IdPaisEmisorDocumento : INTEGER
+}
+
+class DomicilioPaciente {
+  Id : UNIQUEIDENTIFIER
+  Direccion : VARCHAR 255
+  Uso : 'home' | 'work' | 'temp' | 'old' | 'billing' | NULL
+  IdPaciente : UNIQUEIDENTIFIER
+  IdPais : INTEGER | NULL
+  IdRegion : INTEGER | NULL
+  IdProvincia : INTEGER | NULL
+  IdComuna : INTEGER | NULL
+}
+
+class MedioContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  Sistema : 'phone' | 'email'
+  Uso : 'home' | 'work' | 'temp' | 'old' | 'mobile' | NULL
+  Valor : VARCHAR 255
+  OrdenPreferencia : INT | NULL
+}
+
+class ContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  NombreOficial : VARCHAR 50 | NULL
+  ApellidoPaterno : VARCHAR 255 | NULL
+  ApellidoMaterno : VARCHAR 255 | NULL
+}
+
+class RelacionContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdContacto : UNIQUEIDENTIFIER
+  IdRelacion : INTEGER
+}
+
+class IdentificadorContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  Sistema : URL
+  Valor : VARCHAR 255
+  IdPaisEmisorDocumento : INTEGER
+  CodingType : VARCHAR MAX | NULL
+}
+
+%% ======== ValueSets ========
+class IdentidadGenero {
+  <<ValueSet>>
+}
+
+class GeneroAdministrativo {
+  <<ValueSet>>
+}
+
+class Pais {
+  <<ValueSet>>
+}
+
+class Religion {
+  <<ValueSet>>
+}
+
+class PuebloOriginario {
+  <<ValueSet>>
+}
+
+class EstadoCivil {
+  <<ValueSet>>
+}
+
+class Lenguaje {
+  <<ValueSet>>
+}
+
+class TipoIdentificadorPaciente {
+  <<ValueSet>>
+}
+
+class Region {
+  <<ValueSet>>
+}
+
+class Provincia {
+  <<ValueSet>>
+}
+
+class Comuna {
+  <<ValueSet>>
+}
+
+class RelacionContacto {
+  <<ValueSet>>
+}
+
+%% ======== Relaciones ========
+Paciente --> IdentidadGenero : IdIdentidadGenero
+Paciente --> GeneroAdministrativo : IdSexoAdministrativo
+Paciente --> GeneroAdministrativo : IdSexoBiologico
+Paciente --> Pais : IdNacionalidad
+Paciente --> Pais : IdPaisOrigen
+Paciente --> Religion : IdReligion
+Paciente --> PuebloOriginario : IdPuebloOriginario
+Paciente --> EstadoCivil : IdEstadoCivil
+
+LenguajePaciente --> Paciente : IdPaciente
+LenguajePaciente --> Lenguaje : IdLenguaje
+
+IdentificadorPaciente --> Paciente : IdPaciente
+IdentificadorPaciente --> TipoIdentificadorPaciente : IdTipoIdentificadorPaciente
+IdentificadorPaciente --> Pais : IdPaisEmisorDocumento
+
+DomicilioPaciente --> Paciente : IdPaciente
+DomicilioPaciente --> Pais : IdPais
+DomicilioPaciente --> Region : IdRegion
+DomicilioPaciente --> Provincia : IdProvincia
+DomicilioPaciente --> Comuna : IdComuna
+
+MedioContactoPaciente --> Paciente : IdPaciente
+
+ContactoPaciente --> Paciente : IdPaciente
+
+RelacionContactoPaciente --> ContactoPaciente : IdContacto
+RelacionContactoPaciente --> RelacionContacto : IdRelacion
+
+IdentificadorContactoPaciente --> Paciente : IdPaciente
+IdentificadorContactoPaciente --> Pais : IdPaisEmisorDocumento
+
+%% ======== Estilos ========
+class IdentidadGenero,GeneroAdministrativo,Pais,Religion,PuebloOriginario,EstadoCivil,Lenguaje,TipoIdentificadorPaciente,Region,Provincia,Comuna,RelacionContacto fill:#FFE6A5

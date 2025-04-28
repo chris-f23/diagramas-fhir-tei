@@ -1,4 +1,18 @@
--- https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html
+/* https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html */
+
+USE [BD_FHIR_TIEMPOS_ESPERA_INTEROPERABLES]
+
+DROP TABLE IF EXISTS [dbo].[ValueSet_Comuna];
+
+CREATE TABLE [dbo].[ValueSet_Comuna] (
+  Id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(100) NOT NULL,
+  Sistema VARCHAR(250) NOT NULL,
+  Texto VARCHAR(250) NOT NULL,
+  CONSTRAINT UQ_ValueSet_Comuna_Codigo_Sistema UNIQUE (Codigo, Sistema),
+  CONSTRAINT CK_ValueSet_Comuna_SistemaUrl CHECK (Sistema LIKE 'http%')
+);
+
 INSERT INTO [dbo].[ValueSet_Comuna] (Codigo, Sistema, Texto) VALUES
   ('05602', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodComunasCL', 'Algarrobo'),
   ('13502', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodComunasCL', 'Alhué'),

@@ -1,4 +1,18 @@
--- https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html
+/* https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html */
+
+USE [BD_FHIR_TIEMPOS_ESPERA_INTEROPERABLES]
+
+DROP TABLE IF EXISTS [dbo].[ValueSet_Pais];
+
+CREATE TABLE [dbo].[ValueSet_Pais] (
+  Id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(100) NOT NULL,
+  Sistema VARCHAR(250) NOT NULL,
+  Texto VARCHAR(250) NOT NULL,
+  CONSTRAINT UQ_ValueSet_Pais_Codigo_Sistema UNIQUE (Codigo, Sistema),
+  CONSTRAINT CK_ValueSet_Pais_SistemaUrl CHECK (Sistema LIKE 'http%')
+);
+
 INSERT INTO [dbo].[ValueSet_Pais] (Codigo, Sistema, Texto) VALUES
   ('004', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Afghanistan'),
   ('008', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Albania'),
@@ -248,4 +262,4 @@ INSERT INTO [dbo].[ValueSet_Pais] (Codigo, Sistema, Texto) VALUES
   ('876', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Wallis and Futuna'),
   ('882', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Samoa'),
   ('887', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Yemen'),
-  ('894', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Zambia')
+  ('894', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CodPais', 'Zambia');

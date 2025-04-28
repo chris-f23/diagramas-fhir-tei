@@ -1,4 +1,18 @@
--- https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html
+/* https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html */
+
+USE [BD_FHIR_TIEMPOS_ESPERA_INTEROPERABLES]
+
+DROP TABLE IF EXISTS [dbo].[ValueSet_Provincia];
+
+CREATE TABLE [dbo].[ValueSet_Provincia] (
+  Id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(100) NOT NULL,
+  Sistema VARCHAR(250) NOT NULL,
+  Texto VARCHAR(250) NOT NULL,
+  CONSTRAINT UQ_ValueSet_Provincia_Codigo_Sistema UNIQUE (Codigo, Sistema),
+  CONSTRAINT CK_ValueSet_Provincia_SistemaUrl CHECK (Sistema LIKE 'http%')
+);
+
 INSERT INTO [dbo].[ValueSet_Provincia] (Codigo, Sistema, Texto) VALUES
   ('122', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Antártica Chilena'),
   ('021', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Antofagasta'),
@@ -55,4 +69,4 @@ INSERT INTO [dbo].[ValueSet_Provincia] (Codigo, Sistema, Texto) VALUES
   ('023', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Tocopilla'),
   ('124', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'última Esperanza'),
   ('141', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Valdivia'),
-  ('051', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Valparaíso')
+  ('051', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodProvinciasCL', 'Valparaíso');

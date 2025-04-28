@@ -1,0 +1,205 @@
+---
+config:
+  layout: elk
+  theme: base
+  class:
+    hideEmptyMembersBox: true
+  themeVariables:
+    primaryBorderColor: "#000000"
+    primaryColor: "#C9E6F0"
+---
+
+classDiagram
+direction LR
+
+%% Pendientes:
+%% - generalPractitioner
+%% - nombre oficial y nombre social deben ser una lista en vez de un valor unico
+class Paciente {
+  Id : UNIQUEIDENTIFIER
+  PerteneceAPuebloOriginario : BIT
+  PerteneceAPuebloAfrodescendiente : BIT | NULL
+  %% Cada nombre está delimitado por el carácter "|"
+  NombreOficial : VARCHAR 50 | NULL
+  ApellidoPaterno : VARCHAR 50
+  ApellidoMaterno : VARCHAR 50
+  %% Cada nombre está delimitado por el carácter "|"
+  NombreSocial : VARCHAR 50 | NULL
+  FechaNacimiento : DATETIME
+  FechaFallecimiento : DATETIME | NULL
+  IdIdentidadGenero : INTEGER
+  IdSexoAdministrativo : INTEGER
+  IdSexoBiologico : INTEGER | NULL
+  IdNacionalidad : INTEGER
+  IdPaisOrigen : INTEGER
+  IdReligion : INTEGER | NULL
+  IdPuebloOriginario : INTEGER | NULL
+  IdEstadoCivil : INTEGER | NULL
+}
+
+class LenguajePaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  IdLenguaje : INTEGER
+}
+
+class IdentificadorPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  IdTipoIdentificador : INTEGER
+  Uso : 'usual' | 'official' | 'temp' | 'secondary' | 'old'
+  Valor : VARCHAR 255
+  IdPaisEmisorDocumento : INTEGER
+}
+
+class DomicilioPaciente {
+  Id : UNIQUEIDENTIFIER
+  Direccion : VARCHAR 255
+  Uso : 'home' | 'work' | 'temp' | 'old' | 'billing' | NULL
+  IdPaciente : UNIQUEIDENTIFIER
+  IdPais : INTEGER | NULL
+  IdRegion : INTEGER | NULL
+  IdProvincia : INTEGER | NULL
+  IdComuna : INTEGER | NULL
+}
+
+class MedioContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  Sistema : 'phone' | 'email'
+  Uso : 'home' | 'work' | 'temp' | 'old' | 'mobile' | NULL
+  Valor : VARCHAR 255
+  OrdenPreferencia : INT | NULL
+}
+
+class ContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdPaciente : UNIQUEIDENTIFIER
+  %% Cada nombre está delimitado por el carácter "|"
+  NombreOficial : VARCHAR 50 | NULL
+  ApellidoPaterno : VARCHAR 255 | NULL
+  ApellidoMaterno : VARCHAR 255 | NULL
+}
+
+class RelacionContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdContactoPaciente : UNIQUEIDENTIFIER
+  IdRelacionContacto : INTEGER
+}
+
+class IdentificadorContactoPaciente {
+  Id : UNIQUEIDENTIFIER
+  IdContactoPaciente : UNIQUEIDENTIFIER
+  Sistema : URL
+  Valor : VARCHAR 255
+  IdPaisEmisorDocumento : INTEGER
+  CodingType : JSON | NULL
+}
+
+class IdentidadGenero {
+  <<ValueSet>>
+}
+style IdentidadGenero fill:#FFE6A5
+
+class GeneroAdministrativo {
+  <<ValueSet>>
+}
+style GeneroAdministrativo fill:#FFE6A5
+
+class Pais {
+  <<ValueSet>>
+}
+style Pais fill:#FFE6A5
+
+class Religion {
+  <<ValueSet>>
+}
+style Religion fill:#FFE6A5
+
+class PuebloOriginario {
+  <<ValueSet>>
+}
+style PuebloOriginario fill:#FFE6A5
+
+class EstadoCivil {
+  <<ValueSet>>
+}
+style EstadoCivil fill:#FFE6A5
+
+class Lenguaje {
+  <<ValueSet>>
+}
+style Lenguaje fill:#FFE6A5
+
+class TipoIdentificador {
+  <<ValueSet>>
+}
+style TipoIdentificador fill:#FFE6A5
+
+class Region {
+  <<ValueSet>>
+}
+style Region fill:#FFE6A5
+
+class Provincia {
+  <<ValueSet>>
+}
+style Provincia fill:#FFE6A5
+
+class Comuna {
+  <<ValueSet>>
+}
+style Comuna fill:#FFE6A5
+
+class RelacionContacto {
+  <<ValueSet>>
+}
+style RelacionContacto fill:#FFE6A5
+
+%% Relaciones
+Paciente --> IdentidadGenero: IdIdentidadGenero (1..1)
+Paciente --> GeneroAdministrativo: IdSexoAdministrativo (1..1)
+Paciente --> GeneroAdministrativo: IdSexoBiologico (0..1)
+Paciente --> Religion: IdReligion (0..1)
+Paciente --> PuebloOriginario: IdPuebloOriginario (0..1)
+Paciente --> EstadoCivil: IdEstadoCivil (0..1)
+Paciente --> Pais: IdNacionalidad (1..1)
+Paciente --> IdentificadorPaciente: (1..*)
+Paciente --> Pais: IdPaisOrigen (1..1)
+Paciente --> LenguajePaciente: (0..*)
+Paciente --> ContactoPaciente: (0..*)
+Paciente --> MedioContactoPaciente: (1..*)
+Paciente --> DomicilioPaciente: (0..*)
+
+DomicilioPaciente --> Pais: IdPais (0..1)
+DomicilioPaciente --> Region: IdRegion (0..1)
+DomicilioPaciente --> Provincia: IdProvincia (0..1)
+DomicilioPaciente --> Comuna: IdComuna (0..1)
+
+LenguajePaciente --> Lenguaje: IdLenguaje (1..1)
+IdentificadorPaciente --> TipoIdentificador: IdTipoIdentificador (1..1)
+IdentificadorPaciente --> Pais: IdPaisEmisorDocumento (1..1)
+
+
+
+ContactoPaciente --> IdentificadorContactoPaciente: (0..*)
+ContactoPaciente --> RelacionContactoPaciente: (0..*)
+
+
+RelacionContactoPaciente --> RelacionContacto: IdRelacionContacto (1..1)
+IdentificadorContactoPaciente --> Pais: IdPaisEmisorDocumento (1..1)
+
+
+link IdentificadorPaciente "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PatientLE-definitions.html#Patient.identifier"
+link TipoIdentificador "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSTipoIdentificador.html"
+link Pais "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html"
+link IdentidadGenero "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSIdentidaddeGenero.html"
+link GeneroAdministrativo "https://hl7.org/fhir/R4/valueset-administrative-gender.html"
+link Religion "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSReligion.html"
+link PuebloOriginario "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-PueblosOriginariosVS.html"
+link EstadoCivil "https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/ValueSet-VSEstadoCivil.html"
+link RelacionContactoPaciente "https://hl7.org/fhir/R4/valueset-patient-contactrelationship.html"
+link Comuna "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html"
+link Provincia "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html"
+link Region "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosRegionesCL.html"
+link Lenguaje "https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigoslenguaje.html"

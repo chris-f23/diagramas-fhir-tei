@@ -1,3 +1,18 @@
+/* https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigoslenguaje.html */
+
+USE [BD_FHIR_TIEMPOS_ESPERA_INTEROPERABLES]
+
+DROP TABLE IF EXISTS [dbo].[ValueSet_Lenguaje];
+
+CREATE TABLE [dbo].[ValueSet_Lenguaje] (
+  Id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  Codigo VARCHAR(100) NOT NULL,
+  Sistema VARCHAR(250) NOT NULL,
+  Texto VARCHAR(250) NOT NULL,
+  CONSTRAINT UQ_ValueSet_Lenguaje_Codigo_Sistema UNIQUE (Codigo, Sistema),
+  CONSTRAINT CK_ValueSet_Lenguaje_SistemaUrl CHECK (Sistema LIKE 'http%')
+);
+
 INSERT INTO [dbo].[ValueSet_Lenguaje] (Codigo, Sistema, Texto) VALUES
   ('ar-SA', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Arabic (Saudi Arabia, Arabic (Saudi Arabia))'),
   ('bn-BD', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Bangla (Bangladesh, Bangla (Bangladesh))'),
@@ -51,5 +66,4 @@ INSERT INTO [dbo].[ValueSet_Lenguaje] (Codigo, Sistema, Texto) VALUES
   ('tr-TR', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Turkish (Turkey, Turkish (Turkey))'),
   ('zh-CN', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Chinese (China, Mainland China, simplified characters)'),
   ('zh-HK', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Chinese (Hond Kong, Hong Kong, traditional characters)'),
-  ('zh-TW', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Chinese (Taiwan, Taiwan, traditional characters)')
-
+  ('zh-TW', 'https://hl7chile.cl/fhir/ig/clcore/CodeSystem/CSCodigoslenguaje', 'Chinese (Taiwan, Taiwan, traditional characters)');

@@ -85,6 +85,9 @@ class RelacionContactoPaciente {
   Id : UNIQUEIDENTIFIER
   IdContactoPaciente : UNIQUEIDENTIFIER
   IdRelacionContacto : INTEGER
+
+  %% https://build.fhir.org/ig/Minsal-CL/SIGTEv2-IG/StructureDefinition-PatientLE-definitions.html#key_Patient.contact.relationship.coding
+  Coding : JSON
 }
 
 class IdentificadorContactoPaciente {

@@ -22,10 +22,8 @@ DECLARE
 DECLARE
   @rutPaciente VARCHAR(100) = '1121557-2',
   @direccionResidenciaPaciente VARCHAR(100) = 'Av. Pedro Aguirre Cerda #1234, Piso 2',
-  @paisResidenciaPaciente INTEGER = 43, /* Chile */
+  @paisResidenciaPaciente INTEGER = 43; /* Chile */
 
-
-BD_FHIR_TIEMPOS_ESPERA_INTEROPERABLES..sp_help MedioContactoPaciente
 
 BEGIN TRANSACTION T1;
 DECLARE @resultadoGetPaciente TABLE (id UNIQUEIDENTIFIER);

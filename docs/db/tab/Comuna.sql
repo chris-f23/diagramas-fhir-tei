@@ -1,140 +1,21 @@
+USE [BD_ENTI_CORPORATIVA]
 
-
-
-/*
-  https://es.wikipedia.org/wiki/ISO_3166-1 
-  https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-CodPais.html
-*/
-CREATE TABLE [dbo].[TAB_Pais_ISO3166_1N]
-(
-  Codigo CHAR(3) PRIMARY KEY CHECK (Codigo LIKE '[0-9][0-9][0-9]'),
-  Nombre VARCHAR(20) NOT NULL,
-  Vigente BIT DEFAULT 1 NOT NULL,
-);
-
-/*
-  No: https://www.bcn.cl/leychile/navegar?idNorma=1123248&idParte=9950411
-  Si: https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosRegionesCL.html
-*/
-CREATE TABLE [dbo].[TAB_RegionChile]
-(
-  CodigoUnicoTerritorial CHAR(2) PRIMARY KEY CHECK (CodigoUnicoTerritorial LIKE '[0-9][0-9]'),
-  Nombre VARCHAR(50) NOT NULL,
-  Vigente BIT DEFAULT 1 NOT NULL,
-  Orden INT NULL
-);
-
-/*
-  https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosProvinciasCL.html
-*/
-CREATE TABLE [dbo].[TAB_ProvinciaChile]
-(
-  CodigoUnicoTerritorial CHAR(3) PRIMARY KEY CHECK (CodigoUnicoTerritorial LIKE '[0-9][0-9][0-9]'),
-  Nombre VARCHAR(50) NOT NULL,
-  Vigente BIT DEFAULT 1 NOT NULL,
-  CodigoUnicoTerritorialRegion CHAR(2) NOT NULL,
-
-  FOREIGN KEY (CodigoUnicoTerritorialRegion) REFERENCES TAB_RegionChile(CodigoUnicoTerritorial)
-);
-
+DROP TABLE IF EXISTS [TAB_CodigoUnicoTerritorialComuna];
 /*
   https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigosComunaCL.html
 */
-CREATE TABLE [dbo].[TAB_ComunaChile]
+CREATE TABLE [dbo].[TAB_CodigoUnicoTerritorialComuna]
 (
-  CodigoUnicoTerritorial CHAR(5) PRIMARY KEY CHECK (CodigoUnicoTerritorial LIKE '[0-9][0-9][0-9][0-9][0-9]'),
+  Codigo CHAR(5) PRIMARY KEY CHECK (Codigo LIKE '[0-9][0-9][0-9][0-9][0-9]'),
   Nombre VARCHAR(50) NOT NULL,
   Vigente BIT DEFAULT 1 NOT NULL,
-  CodigoUnicoTerritorialProvincia VARCHAR(3) NOT NULL,
+  CodigoProvincia CHAR(3) NOT NULL,
 
-  FOREIGN KEY (CodigoUnicoTerritorialProvincia) REFERENCES TAB_CodigoProvinciaChile(CodigoUnicoTerritorial)
+  FOREIGN KEY (CodigoProvincia) REFERENCES TAB_CodigoUnicoTerritorialProvincia(Codigo)
 );
 
-/* ------------------------------------------------------------------------------------------------------------------------ */
-
-
-INSERT INTO [dbo].[TAB_RegionChile]
-  (CodigoUnicoTerritorial, Nombre, Orden)
-VALUES
-  ('15', 'Arica y Parinacota', 1),
-  ('01', 'Tarapacá', 2),
-  ('02', 'Antofagasta', 3),
-  ('03', 'Atacama', 4),
-  ('04', 'Coquimbo', 5),
-  ('05', 'Valparaíso', 6),
-  ('13', 'Metropolitana de Santiago', 7),
-  ('06', 'Del Libertador Gral. Bernardo O''Higgins', 8),
-  ('07', 'Del Maule', 9),
-  ('08', 'Del Biobío', 10),
-  ('09', 'De la Araucanía', 11),
-  ('14', 'De los Ríos', 12),
-  ('10', 'De los Lagos', 13),
-  ('11', 'Aysén del Gral. Carlos Ibáñez del Campo', 14),
-  ('12', 'Magallanes y de la Antártica Chilena', 15),
-  ('16', 'Ñuble', 16);
-
-INSERT INTO [dbo].[TAB_ProvinciaChile]
-  (CodigoUnicoTerritorialRegion, CodigoUnicoTerritorial, Nombre)
-VALUES
-  ('15', '151', 'Arica'),
-  ('15', '152', 'Parinacota'),
-  ('01', '011', 'Iquique'),
-  ('01', '014', 'Tamarugal'),
-  ('02', '021', 'Antofagasta'),
-  ('02', '022', 'El Loa'),
-  ('02', '023', 'Tocopilla'),
-  ('03', '031', 'Copiapó'),
-  ('03', '032', 'Chañaral'),
-  ('03', '033', 'Huasco'),
-  ('04', '041', 'Elqui'),
-  ('04', '042', 'Choapa'),
-  ('04', '043', 'Limarí'),
-  ('05', '051', 'Valparaíso'),
-  ('05', '052', 'Isla de Pascua'),
-  ('05', '053', 'Los Andes'),
-  ('05', '054', 'Petorca'),
-  ('05', '055', 'Quillota'),
-  ('05', '056', 'San Antonio'),
-  ('05', '057', 'San Felipe de Aconcagua'),
-  ('05', '058', 'Marga Marga'),
-  ('13', '131', 'Santiago'),
-  ('13', '132', 'Cordillera'),
-  ('13', '133', 'Chacabuco'),
-  ('13', '134', 'Maipo'),
-  ('13', '135', 'Melipilla'),
-  ('13', '136', 'Talagante'),
-  ('06', '061', 'Cachapoal'),
-  ('06', '062', 'Cardenal Caro'),
-  ('06', '063', 'Colchagua'),
-  ('07', '071', 'Talca'),
-  ('07', '072', 'Cauquenes'),
-  ('07', '073', 'Curicó'),
-  ('07', '074', 'Linares'),
-  ('08', '081', 'Concepción'),
-  ('08', '082', 'Arauco'),
-  ('08', '083', 'Biobío'),
-  ('09', '091', 'Cautín'),
-  ('09', '092', 'Malleco'),
-  ('14', '141', 'Valdivia'),
-  ('14', '142', 'Ranco'),
-  ('10', '101', 'Llanquihue'),
-  ('10', '102', 'Chiloé'),
-  ('10', '103', 'Osorno'),
-  ('10', '104', 'Palena'),
-  ('11', '111', 'Coihaique'),
-  ('11', '112', 'Aysén'),
-  ('11', '113', 'Capitán Prat'),
-  ('11', '114', 'General Carrera'),
-  ('12', '121', 'Magallanes'),
-  ('12', '122', 'Antártica Chilena'),
-  ('12', '123', 'Tierra del Fuego'),
-  ('12', '124', 'última Esperanza'),
-  ('16', '161', 'Diguillín'),
-  ('16', '162', 'Itata'),
-  ('16', '163', 'Punilla');
-
-INSERT INTO [dbo].[TAB_ComunaChile]
-  (CodigoUnicoTerritorialProvincia, CodigoUnicoTerritorial, Nombre)
+INSERT INTO [dbo].[TAB_CodigoUnicoTerritorialComuna]
+  (CodigoProvincia, Codigo, Nombre)
 VALUES
   ('151', '15101', 'Arica'),
   ('151', '15102', 'Camarones'),
@@ -482,76 +363,3 @@ VALUES
   ('163', '16303', 'Ñiquén'),
   ('163', '16304', 'San Fabián'),
   ('163', '16305', 'San Nicolás');
-
-
-
-
-INSERT INTO [dbo].[TAB_RelacionContactoPacienteExtendido]
-  (Codigo, Nombre)
-VALUES
-  ('C', 'Contacto de emergencia'),
-  ('E', 'Empleador'),
-  ('F', 'Entidad federal'),
-  ('I', 'Compañia de seguros'),
-  ('N', 'Pariente más cercano'),
-  ('S', 'Entidad estatal'),
-  ('U', 'Desconocido');
-
-
-/* https://hl7chile.cl/fhir/ig/clcore/1.9.2/ValueSet-VSCodigoslenguaje.html */
-INSERT INTO [dbo].[TAB_Lenguaje]
-  (Codigo, Nombre)
-VALUES
-  ('ar-SA', 'Arabic	Saudi Arabia, Arabic (Saudi Arabia)'),
-  ('bn-BD', 'Bangla	Bangladesh, Bangla (Bangladesh)'),
-  ('bn-IN', 'Bangla	India, Bangla (India)'),
-  ('cs-CZ', 'Czech	Czech Republic, Czech (Czech Republic)'),
-  ('da-DK', 'Danish	Denmark, Danish (Denmark)'),
-  ('de-AT', 'German	Austria, Austrian German'),
-  ('de-CH', 'German	Switzerland, Swiss German'),
-  ('de-DE', 'German	Germany, Standard German (as spoken in Germany)'),
-  ('el-GR', 'Greek	Greece, Modern Greek'),
-  ('en-AU', 'English	Australia, Australian English'),
-  ('en-CA', 'English	Canada, Canadian English'),
-  ('en-GB', 'English	United Kingdom, British English'),
-  ('en-IE', 'English	Ireland, Irish English'),
-  ('en-IN', 'English	India, Indian English'),
-  ('en-NZ', 'English	New Zealand, New Zealand English'),
-  ('en-US', 'English	United States, US English'),
-  ('en-ZA', 'English	South Africa, English (South Africa)'),
-  ('es-AR', 'Spanish	Argentina, Argentine Spanish'),
-  ('es-CL', 'Spanish	Chile, Chilean Spanish'),
-  ('es-CO', 'Spanish	Columbia, Colombian Spanish'),
-  ('es-ES', 'Spanish	Spain, Castilian Spanish (as spoken in Central-Northern Spain)'),
-  ('es-MX', 'Spanish	Mexico, Mexican Spanish'),
-  ('es-US', 'Spanish	United States, American Spanish'),
-  ('fi-FI', 'Finnish	Finland, Finnish (Finland)'),
-  ('fr-BE', 'French	Belgium, Belgian French'),
-  ('fr-CA', 'French	Canada, Canadian French'),
-  ('fr-CH', 'French	Switzerland, Swiss French'),
-  ('fr-FR', 'French	France, Standard French (especially in France)'),
-  ('he-IL', 'Hebrew	Israel, Hebrew (Israel)'),
-  ('hi-IN', 'Hindi	India, Hindi (India)'),
-  ('hu-HU', 'Hungarian	Hungary, Hungarian (Hungary)'),
-  ('id-ID', 'Indonesian	Indonesia, Indonesian (Indonesia)'),
-  ('it-CH', 'Italian	Switzerland, Swiss Italian'),
-  ('it-IT', 'Italian	Italy, Standard Italian (as spoken in Italy)'),
-  ('jp-JP', 'Japanese	Japan, Japanese (Japan)'),
-  ('ko-KR', 'Korean	Republic of Korea, Korean (Republic of Korea)'),
-  ('nl-BE', 'Dutch	Belgium, Belgian Dutch'),
-  ('nl-NL', 'Dutch	The Netherlands, Standard Dutch (as spoken in The Netherlands)'),
-  ('no-NO', 'Norwegian	Norway, Norwegian (Norway)'),
-  ('pl-PL', 'Polish	Poland, Polish (Poland)'),
-  ('pt-BR', 'Portugese	Brazil, Brazilian Portuguese'),
-  ('pt-PT', 'Portugese	Portugal, European Portuguese (as written and spoken in Portugal)'),
-  ('ro-RO', 'Romanian	Romania, Romanian (Romania)'),
-  ('ru-RU', 'Russian	Russian Federation, Russian (Russian Federation)'),
-  ('sk-SK', 'Slovak	Slovakia, Slovak (Slovakia)'),
-  ('sv-SE', 'Swedish	Sweden, Swedish (Sweden)'),
-  ('ta-IN', 'Tamil	India, Indian Tamil'),
-  ('ta-LK', 'Tamil	Sri Lanka, Sri Lankan Tamil'),
-  ('th-TH', 'Thai	Thailand, Thai (Thailand)'),
-  ('tr-TR', 'Turkish	Turkey, Turkish (Turkey)'),
-  ('zh-CN', 'Chinese	China, Mainland China, simplified characters'),
-  ('zh-HK', 'Chinese	Hond Kong, Hong Kong, traditional characters'),
-  ('zh-TW', 'Chinese	Taiwan, Taiwan, traditional characters');
